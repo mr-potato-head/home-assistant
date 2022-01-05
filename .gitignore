@@ -5,3 +5,5 @@
 !.gitignore
 !configuration.yaml
 !lovelace.yaml
+!screenshots/
+!screenshots/*
