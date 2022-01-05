@@ -69,7 +69,7 @@ views:
               size: 40%
               styles:
                 state:
-                  - font-size: 70px
+                  - font-size: 90px
             - type: horizontal-stack
               cards:
                 - type: custom:button-card
@@ -93,6 +93,8 @@ views:
                             if (entity.state === "Travail") return 'lightblue';
                             else return '';
                           ]]]
+                    card:
+                      - height: 90px
                   #aspect_ratio: 1/1
                 - type: custom:button-card
                   entity: input_select.input_select_mode_maison
@@ -115,6 +117,8 @@ views:
                             if (entity.state === "Télétravail") return 'lightblue';
                             else return '';
                           ]]]
+                    card:
+                      - height: 90px
                   #aspect_ratio: 1/1
                 - type: custom:button-card
                   entity: input_select.input_select_mode_maison
@@ -137,6 +141,8 @@ views:
                             if (entity.state === "Weekend") return 'lightblue';
                             else return '';
                           ]]]
+                    card:
+                      - height: 90px
                   #aspect_ratio: 1/1
                 - type: custom:button-card
                   entity: input_select.input_select_mode_maison
@@ -159,6 +165,8 @@ views:
                             if (entity.state === "Vacances") return 'lightblue';
                             else return '';
                           ]]]
+                    card:
+                      - height: 90px
                   #aspect_ratio: 1/1
             
         - align_icon: left
@@ -272,6 +280,8 @@ views:
                           if (entity.state > 0) return 'lightcoral';
                           else return '';
                         ]]]
+                  card:
+                    - height: 60px
               - type: custom:button-card
                 entity: sensor.windows_count_salon
                 icon: |
@@ -291,6 +301,8 @@ views:
                           if (entity.state > 0) return 'lightcoral';
                           else return '';
                         ]]]
+                  card:
+                    - height: 60px
               - type: custom:button-card
                 entity: switch.switch_radiateur_salon
                 icon: |
@@ -314,6 +326,8 @@ views:
                           else
                             return 'lightcoral';
                         ]]]
+                  card:
+                    - height: 60px
 
         - type: grid
           square: false
@@ -324,36 +338,54 @@ views:
               entity: cover.garage_door
               name: Garage
               size: 60%
+              styles:
+                card:
+                  - height: 110px
             - type: custom:button-card
               tap_action:
                 action: toggle
               entity: light.terrasse
               name: Terasse
               size: 60%
+              styles:
+                card:
+                  - height: 110px
             - type: custom:button-card
               tap_action:
                 action: toggle
               entity: light.lumieres_salon
               name: Salon
               size: 60%
+              styles:
+                card:
+                  - height: 110px
             - type: custom:button-card
               tap_action:
                 action: toggle
               entity: light.zigbee_ampoule_entree_on_off
               name: Entrée
               size: 60%
+              styles:
+                card:
+                  - height: 110px
             - type: custom:button-card
               tap_action:
                 action: toggle
               entity: light.escalier
               name: Escalier
               size: 60%
+              styles:
+                card:
+                  - height: 110px
             - type: custom:button-card
               tap_action:
                 action: toggle
               entity: light.garage
               name: Garage
               size: 60%
+              styles:
+                card:
+                  - height: 110px
             
       - type: horizontal-stack
         cards:
