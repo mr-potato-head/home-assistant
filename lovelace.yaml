@@ -1,0 +1,1013 @@
+views:
+  - title: Home
+    type: panel
+    theme: noctis
+    cards:
+    - type: vertical-stack
+      cards:
+      - type: horizontal-stack
+        cards:
+        - type: horizontal-stack
+          cards:
+          - align_icon: left
+            align_state: center
+            entities:
+              - sensor.zigbee_capteur_temperature_exterieure_temperature
+            font_size: 120
+            icon: 'mdi:sun-thermometer-outline'
+            name: Température
+            show:
+              fill: false
+            hours_to_show: 24
+            points_per_hour: 2
+            color_thresholds:
+            - value: -50
+              color: "#33DCCF"
+            - value: 0
+              color: "#82E0AA"
+            - value: 15
+              color: "#F7DC6F"
+            - value: 23
+              color: "#E74C3C"
+            - value: 30
+              color: "#922B21"
+            type: 'custom:mini-graph-card'
+
+          - align_icon: left
+            align_state: center
+            entities:
+              - sensor.zigbee_capteur_temperature_exterieure_humidite
+            font_size: 120
+            icon: 'mdi:water-percent'
+            name: Humidité
+            show:
+              fill: false
+            hours_to_show: 24
+            points_per_hour: 2
+            color_thresholds:
+            - value: 0
+              color: "#33DCCF"
+            - value: 50
+              color: "#82E0AA"
+            - value: 70
+              color: "#F7DC6F"
+            - value: 85
+              color: "#E74C3C"
+            - value: 90
+              color: "#922B21"
+            type: 'custom:mini-graph-card'
+        #- type: weather-forecast
+        #  entity: weather.openweathermap
+            
+        - type: vertical-stack
+          cards:
+            - type: custom:button-card
+              entity: sensor.time_fr
+              show_icon: false
+              show_state: true
+              show_name: false
+              size: 40%
+              styles:
+                state:
+                  - font-size: 70px
+            - type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  entity: input_select.input_select_mode_maison
+                  tap_action:
+                    action: call-service
+                    service: input_select.select_option
+                    service_data:
+                      entity_id: input_select.input_select_mode_maison
+                      option: Travail
+                  icon: mdi:office-building
+                  show_icon: true
+                  show_state: false
+                  show_name: false
+                  size: 50%
+                  #layout: icon_name_state
+                  styles:
+                    icon:
+                      - color: |
+                          [[[
+                            if (entity.state === "Travail") return 'lightblue';
+                            else return '';
+                          ]]]
+                  #aspect_ratio: 1/1
+                - type: custom:button-card
+                  entity: input_select.input_select_mode_maison
+                  tap_action:
+                    action: call-service
+                    service: input_select.select_option
+                    service_data:
+                      entity_id: input_select.input_select_mode_maison
+                      option: Télétravail
+                  icon: mdi:laptop
+                  show_icon: true
+                  show_state: false
+                  show_name: false
+                  size: 50%
+                  #layout: icon_name_state
+                  styles:
+                    icon:
+                      - color: |
+                          [[[
+                            if (entity.state === "Télétravail") return 'lightblue';
+                            else return '';
+                          ]]]
+                  #aspect_ratio: 1/1
+                - type: custom:button-card
+                  entity: input_select.input_select_mode_maison
+                  tap_action:
+                    action: call-service
+                    service: input_select.select_option
+                    service_data:
+                      entity_id: input_select.input_select_mode_maison
+                      option: Weekend
+                  icon: mdi:home
+                  show_icon: true
+                  show_state: false
+                  show_name: false
+                  size: 50%
+                  #layout: icon_name_state
+                  styles:
+                    icon:
+                      - color: |
+                          [[[
+                            if (entity.state === "Weekend") return 'lightblue';
+                            else return '';
+                          ]]]
+                  #aspect_ratio: 1/1
+                - type: custom:button-card
+                  entity: input_select.input_select_mode_maison
+                  tap_action:
+                    action: call-service
+                    service: input_select.select_option
+                    service_data:
+                      entity_id: input_select.input_select_mode_maison
+                      option: Vacances
+                  icon: mdi:umbrella-beach
+                  show_icon: true
+                  show_state: false
+                  show_name: false
+                  size: 50%
+                  #layout: icon_name_state
+                  styles:
+                    icon:
+                      - color: |
+                          [[[
+                            if (entity.state === "Vacances") return 'lightblue';
+                            else return '';
+                          ]]]
+                  #aspect_ratio: 1/1
+            
+        - align_icon: left
+          align_state: center
+          entities:
+            - sensor.zwave_capteur_energie_electrique_puissance_w
+          font_size: 120
+          icon: 'mdi:home-lightning-bolt-outline'
+          name: Puissance instantanée
+          show:
+            fill: false
+          hours_to_show: 3
+          points_per_hour: 20
+          color_thresholds:
+          - value: 0
+            color: "#82E0AA"
+          - value: 2500
+            color: "#DC7633"
+          - value: 7000
+            color: "#CB4335"
+          type: 'custom:mini-graph-card'
+
+      - type: horizontal-stack
+        cards: 
+        - type: weather-forecast
+          entity: weather.openweathermap
+
+        - type: vertical-stack
+          cards:
+          - content: |
+              # Salon
+            style:
+              .: |
+                ha-card {
+                  background-color: transparent !important;
+                  box-shadow: none !important;
+                }
+              ha-markdown:
+                $: |
+                  h1 {
+                    font-size: 28px;
+                  # font-weight: bold;
+                    text-align: center;
+                    letter-spacing: '-0.01em';
+                  }
+            type: markdown
+          - type: custom:button-card
+            entity: sensor.zigbee_capteur_temperature_salon_temperature
+            show_icon: false
+            show_state: true
+            show_name: false
+            styles:
+              state:
+                - font-size: 38px
+          - type: horizontal-stack
+            cards:
+              - type: custom:button-card
+                tap_action:
+                  action: call-service
+                  service: script.temperature_down
+                  service_data:
+                    climate_id: climate.thermostat_salon
+                    value: 0.5
+                icon: mdi:thermometer-minus
+                show_name: false
+                size: 15%
+                aspect_ratio: 3/1
+                styles:
+                  icon:
+                    - color: lightblue
+              - type: custom:button-card
+                entity: sensor.consigne_salon
+                show_icon: false
+                show_state: true
+                show_name: false
+                styles:
+                  state:
+                    - font-size: 24px
+                aspect_ratio: 3/1
+              - type: custom:button-card
+                tap_action:
+                  action: call-service
+                  service: script.temperature_up
+                  service_data:
+                    climate_id: climate.thermostat_salon
+                    value: 0.5
+                icon: mdi:thermometer-plus
+                size: 15%
+                aspect_ratio: 3/1
+                styles:
+                  icon:
+                    - color: lightcoral
+          - type: horizontal-stack
+            cards:
+              - type: custom:button-card
+                entity: sensor.doors_count_salon
+                icon: |
+                  [[[
+                    if (entity.state > 0) return 'mdi:door-open';
+                    else return 'mdi:door-closed';
+                  ]]]
+                show_icon: true
+                show_state: false
+                show_name: false
+                size: 30%
+                #layout: icon_name_state
+                styles:
+                  icon:
+                    - color: |
+                        [[[
+                          if (entity.state > 0) return 'lightcoral';
+                          else return '';
+                        ]]]
+              - type: custom:button-card
+                entity: sensor.windows_count_salon
+                icon: |
+                  [[[
+                    if (entity.state > 0) return 'mdi:window-open-variant';
+                    else return 'mdi:window-closed-variant';
+                  ]]]
+                show_icon: true
+                show_state: false
+                show_name: false
+                size: 30%
+                #layout: icon_name_state
+                styles:
+                  icon:
+                    - color: |
+                        [[[
+                          if (entity.state > 0) return 'lightcoral';
+                          else return '';
+                        ]]]
+              - type: custom:button-card
+                entity: switch.switch_radiateur_salon
+                icon: |
+                  [[[
+                    if (entity.state === 'off')
+                      return 'mdi:radiator-off';
+                    else
+                      return 'mdi:radiator';
+                  ]]]
+                show_icon: true
+                show_state: false
+                show_name: false
+                size: 30%
+                #layout: icon_name_state
+                styles:
+                  icon:
+                    - color: |
+                        [[[
+                          if (entity.state === 'off')
+                            return '';
+                          else
+                            return 'lightcoral';
+                        ]]]
+
+        - type: grid
+          square: false
+          cards:
+            - type: custom:button-card
+              tap_action:
+                action: toggle
+              entity: cover.garage_door
+              name: Garage
+              size: 60%
+            - type: custom:button-card
+              tap_action:
+                action: toggle
+              entity: light.terrasse
+              name: Terasse
+              size: 60%
+            - type: custom:button-card
+              tap_action:
+                action: toggle
+              entity: light.lumieres_salon
+              name: Salon
+              size: 60%
+            - type: custom:button-card
+              tap_action:
+                action: toggle
+              entity: light.zigbee_ampoule_entree_on_off
+              name: Entrée
+              size: 60%
+            - type: custom:button-card
+              tap_action:
+                action: toggle
+              entity: light.escalier
+              name: Escalier
+              size: 60%
+            - type: custom:button-card
+              tap_action:
+                action: toggle
+              entity: light.garage
+              name: Garage
+              size: 60%
+            
+      - type: horizontal-stack
+        cards:
+          - type: vertical-stack
+            cards:
+            - content: |
+                # Salle de bain
+              style:
+                .: |
+                  ha-card {
+                    background-color: transparent !important;
+                    box-shadow: none !important;
+                  }
+                ha-markdown:
+                  $: |
+                    h1 {
+                      font-size: 25px;
+                    # font-weight: bold;
+                      text-align: center;
+                      letter-spacing: '-0.01em';
+                    }
+              type: markdown
+            - type: custom:button-card
+              entity: sensor.zigbee_capteur_temperature_salle_de_bain_temperature
+              show_icon: false
+              show_state: true
+              show_name: false
+              styles:
+                state:
+                  - font-size: 38px
+            - type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  tap_action:
+                    action: call-service
+                    service: script.temperature_down
+                    service_data:
+                      climate_id: climate.thermostat_salle_de_bain
+                      value: 0.5
+                  icon: mdi:thermometer-minus
+                  show_name: false
+                  size: 30%
+                  aspect_ratio: 2/1
+                  styles:
+                    icon:
+                      - color: lightblue
+                - type: custom:button-card
+                  entity: sensor.consigne_salle_de_bain
+                  show_icon: false
+                  show_state: true
+                  show_name: false
+                  styles:
+                    state:
+                      - font-size: 24px
+                  aspect_ratio: 2/1
+                - type: custom:button-card
+                  tap_action:
+                    action: call-service
+                    service: script.temperature_up
+                    service_data:
+                      climate_id: climate.thermostat_salle_de_bain
+                      value: 0.5
+                  icon: mdi:thermometer-plus
+                  size: 30%
+                  aspect_ratio: 2/1
+                  styles:
+                    icon:
+                      - color: lightcoral
+            - type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  entity: sensor.windows_count_salle_de_bain
+                  icon: mdi:window-closed-variant
+                  show_icon: true
+                  show_state: false
+                  show_name: false
+                  size: 30%
+                  #layout: icon_name_state
+                  styles:
+                    icon:
+                      - color: |
+                          [[[
+                            if (entity.state > 0) return 'mdi:window-open-variant';
+                            else return 'mdi:window-closed-variant';
+                          ]]]
+                - type: custom:button-card
+                  entity: switch.switch_radiateur_salle_de_bain
+                  icon: |
+                    [[[
+                      if (entity.state === 'off')
+                        return 'mdi:radiator-off';
+                      else
+                        return 'mdi:radiator';
+                    ]]]
+                  show_icon: true
+                  show_state: false
+                  show_name: false
+                  size: 30%
+                  #layout: icon_name_state
+                  styles:
+                    icon:
+                      - color: |
+                          [[[
+                            if (entity.state === 'off')
+                              return '';
+                            else
+                              return 'lightcoral';
+                          ]]]
+          - type: vertical-stack
+            cards:
+            - content: |
+                # Bureau
+              style:
+                .: |
+                  ha-card {
+                    background-color: transparent !important;
+                    box-shadow: none !important;
+                  }
+                ha-markdown:
+                  $: |
+                    h1 {
+                      font-size: 25px;
+                    # font-weight: bold;
+                      text-align: center;
+                      letter-spacing: '-0.01em';
+                    }
+              type: markdown
+            - type: custom:button-card
+              entity: sensor.zigbee_capteur_temperature_bureau_temperature
+              show_icon: false
+              show_state: true
+              show_name: false
+              styles:
+                state:
+                  - font-size: 38px
+            - type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  tap_action:
+                    action: call-service
+                    service: script.temperature_down
+                    service_data:
+                      climate_id: climate.thermostat_bureau
+                      value: 0.5
+                  icon: mdi:thermometer-minus
+                  show_name: false
+                  size: 30%
+                  aspect_ratio: 2/1
+                  styles:
+                    icon:
+                      - color: lightblue
+                - type: custom:button-card
+                  entity: sensor.consigne_bureau
+                  show_icon: false
+                  show_state: true
+                  show_name: false
+                  styles:
+                    state:
+                      - font-size: 24px
+                  aspect_ratio: 2/1
+                - type: custom:button-card
+                  tap_action:
+                    action: call-service
+                    service: script.temperature_up
+                    service_data:
+                      climate_id: climate.thermostat_bureau
+                      value: 0.5
+                  icon: mdi:thermometer-plus
+                  size: 30%
+                  aspect_ratio: 2/1
+                  styles:
+                    icon:
+                      - color: lightcoral
+            - type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  entity: sensor.windows_count_bureau
+                  icon: |
+                    [[[
+                      if (entity.state > 0) return 'mdi:window-open-variant';
+                      else return 'mdi:window-closed-variant';
+                    ]]]
+                  show_icon: true
+                  show_state: false
+                  show_name: false
+                  size: 30%
+                  #layout: icon_name_state
+                  styles:
+                    icon:
+                      - color: |
+                          [[[
+                            if (entity.state > 0) return 'lightcoral';
+                            else return '';
+                          ]]]
+                - type: custom:button-card
+                  entity: switch.switch_radiateur_bureau
+                  icon: |
+                    [[[
+                      if (entity.state === 'off')
+                        return 'mdi:radiator-off';
+                      else
+                        return 'mdi:radiator';
+                    ]]]
+                  show_icon: true
+                  show_state: false
+                  show_name: false
+                  size: 30%
+                  #layout: icon_name_state
+                  styles:
+                    icon:
+                      - color: |
+                          [[[
+                            if (entity.state === 'off')
+                              return '';
+                            else
+                              return 'lightcoral';
+                          ]]]
+          - type: vertical-stack
+            cards:
+            - content: |
+                # Salle de Jeux
+              style:
+                .: |
+                  ha-card {
+                    background-color: transparent !important;
+                    box-shadow: none !important;
+                  }
+                ha-markdown:
+                  $: |
+                    h1 {
+                      font-size: 25px;
+                    # font-weight: bold;
+                      text-align: center;
+                      letter-spacing: '-0.01em';
+                    }
+              type: markdown
+            - type: custom:button-card
+              entity: sensor.zigbee_capteur_temperature_salle_de_jeux_temperature
+              show_icon: false
+              show_state: true
+              show_name: false
+              size: 35%
+              styles:
+                state:
+                  - font-size: 38px
+            - type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  tap_action:
+                    action: call-service
+                    service: script.temperature_down
+                    service_data:
+                      climate_id: climate.thermostat_salle_de_jeux
+                      value: 0.5
+                  icon: mdi:thermometer-minus
+                  show_name: false
+                  size: 30%
+                  aspect_ratio: 2/1
+                  styles:
+                    icon:
+                      - color: lightblue
+                - type: custom:button-card
+                  entity: sensor.consigne_salle_de_jeux
+                  show_icon: false
+                  show_state: true
+                  show_name: false
+                  styles:
+                    state:
+                      - font-size: 24px
+                  aspect_ratio: 2/1
+                - type: custom:button-card
+                  tap_action:
+                    action: call-service
+                    service: script.temperature_up
+                    service_data:
+                      climate_id: climate.thermostat_salle_de_jeux
+                      value: 0.5
+                  icon: mdi:thermometer-plus
+                  size: 30%
+                  aspect_ratio: 2/1
+                  styles:
+                    icon:
+                      - color: lightcoral
+            - type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  entity: sensor.windows_count_salle_de_jeux
+                  icon: |
+                    [[[
+                      if (entity.state > 0) return 'mdi:window-open-variant';
+                      else return 'mdi:window-closed-variant';
+                    ]]]
+                  show_icon: true
+                  show_state: false
+                  show_name: false
+                  size: 30%
+                  #layout: icon_name_state
+                  styles:
+                    icon:
+                      - color: |
+                          [[[
+                            if (entity.state > 0) return 'lightcoral';
+                            else return '';
+                          ]]]
+                - type: custom:button-card
+                  entity: switch.switch_radiateur_salle_de_jeux
+                  icon: |
+                    [[[
+                      if (entity.state === 'off')
+                        return 'mdi:radiator-off';
+                      else
+                        return 'mdi:radiator';
+                    ]]]
+                  show_icon: true
+                  show_state: false
+                  show_name: false
+                  size: 30%
+                  #layout: icon_name_state
+                  styles:
+                    icon:
+                      - color: |
+                          [[[
+                            if (entity.state === 'off')
+                              return '';
+                            else
+                              return 'lightcoral';
+                          ]]]
+          - type: vertical-stack
+            cards:
+            - content: |
+                # Parents
+              style:
+                .: |
+                  ha-card {
+                    background-color: transparent !important;
+                    box-shadow: none !important;
+                  }
+                ha-markdown:
+                  $: |
+                    h1 {
+                      font-size: 25px;
+                    # font-weight: bold;
+                      text-align: center;
+                      letter-spacing: '-0.01em';
+                    }
+              type: markdown
+            - type: custom:button-card
+              entity: sensor.zigbee_capteur_temperature_chambre_parentale_temperature
+              show_icon: false
+              show_state: true
+              show_name: false
+              size: 35%
+              styles:
+                state:
+                  - font-size: 38px
+            - type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  tap_action:
+                    action: call-service
+                    service: script.temperature_down
+                    service_data:
+                      climate_id: climate.thermostat_chambre_parentale
+                      value: 0.5
+                  icon: mdi:thermometer-minus
+                  show_name: false
+                  size: 30%
+                  aspect_ratio: 2/1
+                  styles:
+                    icon:
+                      - color: lightblue
+                - type: custom:button-card
+                  entity: sensor.consigne_chambre_parentale
+                  show_icon: false
+                  show_state: true
+                  show_name: false
+                  styles:
+                    state:
+                      - font-size: 24px
+                  aspect_ratio: 2/1
+                - type: custom:button-card
+                  tap_action:
+                    action: call-service
+                    service: script.temperature_up
+                    service_data:
+                      climate_id: climate.thermostat_chambre_parentale
+                      value: 0.5
+                  icon: mdi:thermometer-plus
+                  size: 30%
+                  aspect_ratio: 2/1
+                  styles:
+                    icon:
+                      - color: lightcoral
+            - type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  entity: sensor.windows_count_chambre_parentale
+                  icon: |
+                    [[[
+                      if (entity.state > 0) return 'mdi:window-open-variant';
+                      else return 'mdi:window-closed-variant';
+                    ]]]
+                  show_icon: true
+                  show_state: false
+                  show_name: false
+                  size: 30%
+                  #layout: icon_name_state
+                  styles:
+                    icon:
+                      - color: |
+                          [[[
+                            if (entity.state > 0) return 'lightcoral';
+                            else return '';
+                          ]]]
+                - type: custom:button-card
+                  entity: switch.switch_radiateur_chambre_parentale
+                  icon: |
+                    [[[
+                      if (entity.state === 'off')
+                        return 'mdi:radiator-off';
+                      else
+                        return 'mdi:radiator';
+                    ]]]
+                  show_icon: true
+                  show_state: false
+                  show_name: false
+                  size: 30%
+                  #layout: icon_name_state
+                  styles:
+                    icon:
+                      - color: |
+                          [[[
+                            if (entity.state === 'off')
+                              return '';
+                            else
+                              return 'lightcoral';
+                          ]]]
+          - type: vertical-stack
+            cards:
+            - content: |
+                # Léandre
+              style:
+                .: |
+                  ha-card {
+                    background-color: transparent !important;
+                    box-shadow: none !important;
+                  }
+                ha-markdown:
+                  $: |
+                    h1 {
+                      font-size: 25px;
+                    # font-weight: bold;
+                      text-align: center;
+                      letter-spacing: '-0.01em';
+                    }
+              type: markdown
+            - type: custom:button-card
+              entity: sensor.zigbee_capteur_temperature_chambre_leandre_temperature
+              show_icon: false
+              show_state: true
+              show_name: false
+              size: 35%
+              styles:
+                state:
+                  - font-size: 38px
+            - type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  tap_action:
+                    action: call-service
+                    service: script.temperature_down
+                    service_data:
+                      climate_id: climate.thermostat_chambre_leandre
+                      value: 0.5
+                  icon: mdi:thermometer-minus
+                  show_name: false
+                  size: 30%
+                  aspect_ratio: 2/1
+                  styles:
+                    icon:
+                      - color: lightblue
+                - type: custom:button-card
+                  entity: sensor.consigne_chambre_leandre
+                  show_icon: false
+                  show_state: true
+                  show_name: false
+                  styles:
+                    state:
+                      - font-size: 24px
+                  aspect_ratio: 2/1
+                - type: custom:button-card
+                  tap_action:
+                    action: call-service
+                    service: script.temperature_up
+                    service_data:
+                      climate_id: climate.thermostat_chambre_leandre
+                      value: 0.5
+                  icon: mdi:thermometer-plus
+                  size: 30%
+                  aspect_ratio: 2/1
+                  styles:
+                    icon:
+                      - color: lightcoral
+            - type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  entity: sensor.windows_count_chambre_leandre
+                  icon: |
+                    [[[
+                      if (entity.state > 0) return 'mdi:window-open-variant';
+                      else return 'mdi:window-closed-variant';
+                    ]]]
+                  show_icon: true
+                  show_state: false
+                  show_name: false
+                  size: 30%
+                  #layout: icon_name_state
+                  styles:
+                    icon:
+                      - color: |
+                          [[[
+                            if (entity.state > 0) return 'lightcoral';
+                            else return '';
+                          ]]]
+                - type: custom:button-card
+                  entity: switch.switch_radiateur_chambre_leandre
+                  icon: |
+                    [[[
+                      if (entity.state === 'off')
+                        return 'mdi:radiator-off';
+                      else
+                        return 'mdi:radiator';
+                    ]]]
+                  show_icon: true
+                  show_state: false
+                  show_name: false
+                  size: 30%
+                  #layout: icon_name_state
+                  styles:
+                    icon:
+                      - color: |
+                          [[[
+                            if (entity.state === 'off')
+                              return '';
+                            else
+                              return 'lightcoral';
+                          ]]]
+          - type: vertical-stack
+            cards:
+            - content: |
+                # Loïs
+              style:
+                .: |
+                  ha-card {
+                    background-color: transparent !important;
+                    box-shadow: none !important;
+                  }
+                ha-markdown:
+                  $: |
+                    h1 {
+                      font-size: 25px;
+                    # font-weight: bold;
+                      text-align: center;
+                      letter-spacing: '-0.01em';
+                    }
+              type: markdown
+            - type: custom:button-card
+              entity: sensor.zigbee_capteur_temperature_chambre_lois_temperature
+              show_icon: false
+              show_state: true
+              show_name: false
+              size: 35%
+              styles:
+                state:
+                  - font-size: 38px
+            - type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  tap_action:
+                    action: call-service
+                    service: script.temperature_down
+                    service_data:
+                      climate_id: climate.thermostat_chambre_lois
+                      value: 0.5
+                  icon: mdi:thermometer-minus
+                  show_name: false
+                  size: 30%
+                  aspect_ratio: 2/1
+                  styles:
+                    icon:
+                      - color: lightblue
+                - type: custom:button-card
+                  entity: sensor.consigne_chambre_lois
+                  show_icon: false
+                  show_state: true
+                  show_name: false
+                  styles:
+                    state:
+                      - font-size: 24px
+                  aspect_ratio: 2/1
+                - type: custom:button-card
+                  tap_action:
+                    action: call-service
+                    service: script.temperature_up
+                    service_data:
+                      climate_id: climate.thermostat_chambre_lois
+                      value: 0.5
+                  icon: mdi:thermometer-plus
+                  size: 30%
+                  aspect_ratio: 2/1
+                  styles:
+                    icon:
+                      - color: lightcoral
+            - type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  entity: sensor.windows_count_chambre_lois
+                  icon: |
+                    [[[
+                      if (entity.state > 0) return 'mdi:window-open-variant';
+                      else return 'mdi:window-closed-variant';
+                    ]]]
+                  show_icon: true
+                  show_state: false
+                  show_name: false
+                  size: 30%
+                  #layout: icon_name_state
+                  styles:
+                    icon:
+                      - color: |
+                          [[[
+                            if (entity.state > 0) return 'lightcoral';
+                            else return '';
+                          ]]]
+                - type: custom:button-card
+                  entity: switch.switch_radiateur_chambre_lois
+                  icon: |
+                    [[[
+                      if (entity.state === 'off')
+                        return 'mdi:radiator-off';
+                      else
+                        return 'mdi:radiator';
+                    ]]]
+                  show_icon: true
+                  show_state: false
+                  show_name: false
+                  size: 30%
+                  #layout: icon_name_state
+                  styles:
+                    icon:
+                      - color: |
+                          [[[
+                            if (entity.state === 'off')
+                              return '';
+                            else
+                              return 'lightcoral';
+                          ]]]
