@@ -22,7 +22,11 @@ Here is my Home Assistant configuration and some usefull informations like the i
 ## Screenshots
 ### Tablet (single/full page)
 
-![Single page / Fullscreen tablet dashboard](screenshots/tablet_dashboard.png)
+*Noctis Theme*
+![Single page / Fullscreen tablet dashboard](screenshots/tablet_dashboard_noctis.png)
+
+*Slate Theme*
+![Single page / Fullscreen tablet dashboard](screenshots/tablet_dashboard_slate.png)
 
 ### Mobile
 

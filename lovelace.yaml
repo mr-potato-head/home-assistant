@@ -1,7 +1,7 @@
 views:
   - title: Home
     type: panel
-    theme: noctis
+    theme: slate
     cards:
     - type: vertical-stack
       cards:
@@ -471,6 +471,8 @@ views:
                             if (entity.state > 0) return 'mdi:window-open-variant';
                             else return 'mdi:window-closed-variant';
                           ]]]
+                    card:
+                      - height: 40px
                 - type: custom:button-card
                   entity: switch.switch_radiateur_salle_de_bain
                   icon: |
@@ -494,6 +496,8 @@ views:
                             else
                               return 'lightcoral';
                           ]]]
+                    card:
+                      - height: 40px
           - type: vertical-stack
             cards:
             - content: |
@@ -580,6 +584,8 @@ views:
                             if (entity.state > 0) return 'lightcoral';
                             else return '';
                           ]]]
+                    card:
+                      - height: 40px
                 - type: custom:button-card
                   entity: switch.switch_radiateur_bureau
                   icon: |
@@ -603,6 +609,8 @@ views:
                             else
                               return 'lightcoral';
                           ]]]
+                    card:
+                      - height: 40px
           - type: vertical-stack
             cards:
             - content: |
@@ -690,6 +698,8 @@ views:
                             if (entity.state > 0) return 'lightcoral';
                             else return '';
                           ]]]
+                    card:
+                      - height: 40px
                 - type: custom:button-card
                   entity: switch.switch_radiateur_salle_de_jeux
                   icon: |
@@ -713,6 +723,8 @@ views:
                             else
                               return 'lightcoral';
                           ]]]
+                    card:
+                      - height: 40px
           - type: vertical-stack
             cards:
             - content: |
@@ -800,6 +812,8 @@ views:
                             if (entity.state > 0) return 'lightcoral';
                             else return '';
                           ]]]
+                    card:
+                      - height: 40px
                 - type: custom:button-card
                   entity: switch.switch_radiateur_chambre_parentale
                   icon: |
@@ -823,6 +837,8 @@ views:
                             else
                               return 'lightcoral';
                           ]]]
+                    card:
+                      - height: 40px
           - type: vertical-stack
             cards:
             - content: |
@@ -910,6 +926,8 @@ views:
                             if (entity.state > 0) return 'lightcoral';
                             else return '';
                           ]]]
+                    card:
+                      - height: 40px
                 - type: custom:button-card
                   entity: switch.switch_radiateur_chambre_leandre
                   icon: |
@@ -933,6 +951,8 @@ views:
                             else
                               return 'lightcoral';
                           ]]]
+                    card:
+                      - height: 40px
           - type: vertical-stack
             cards:
             - content: |
@@ -1020,6 +1040,8 @@ views:
                             if (entity.state > 0) return 'lightcoral';
                             else return '';
                           ]]]
+                    card:
+                      - height: 40px
                 - type: custom:button-card
                   entity: switch.switch_radiateur_chambre_lois
                   icon: |
@@ -1043,3 +1065,5 @@ views:
                             else
                               return 'lightcoral';
                           ]]]
+                    card:
+                      - height: 40px
