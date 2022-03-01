@@ -25,13 +25,6 @@ lovelace:
 frontend:
   themes: !include_dir_merge_named themes
 
-logger:
-  default: warn
-  logs:
-    custom_components.xiaomi_miio_airpurifier: debug
-    custom_components.xiaomi_miio_fan: debug
-    miio: debug
-
 #####################################################################
 # THERMOSTATS
 #####################################################################
@@ -918,23 +911,24 @@ automation mode_maison:
   - alias: Choix du mode maison en fonction du jour de la semaine
     trigger:
       platform: time
-      at: '00:00'
+      at: '01:00'
     action:
       service: input_select.select_option
       data_template:
         entity_id: input_select.input_select_mode_maison
         option: >
-          {% if now().weekday() in (0,1) %}
-            Télétravail
-          {% elif now().weekday() in (2,3) %}
-            Travail
-          {% elif now().weekday() in (4) %}
+          {% if now().weekday() in (0,1,2,3,4) %}
             Télétravail
           {% elif now().weekday() in (5,6) %}
             Weekend
           {% else %}
             Vacances
           {% endif %}
+
+#          {% elif now().weekday() in (2,3) %}
+#            Travail
+#          {% elif now().weekday() in (4) %}
+#            Télétravail
 
 #####################################################################
 # Lumières à partir des switches
@@ -1195,16 +1189,16 @@ automation lumiere_placard_julie:
         entity_id: light.placard_julie
   mode: restart
 
-garbage_collection:
-  sensors:
-  - name: Poubelle JAUNE # Each week on Wednesday
-    frequency: "even-weeks"
-    collection_days: tue
-    verbose_state: True
-  - name: Poubelle VERTE # Each week on Wednesday
-    frequency: "odd-weeks"
-    collection_days: tue
-    verbose_state: True
+#garbage_collection:
+#  sensors:
+#  - name: Poubelle JAUNE # Each week on Wednesday
+#    frequency: "even-weeks"
+#    collection_days: tue
+#    verbose_state: True
+#  - name: Poubelle VERTE # Each week on Wednesday
+#    frequency: "odd-weeks"
+#    collection_days: tue
+#    verbose_state: True
 
 automation poubelle_verte:
   alias: 'Notification + message TTS poubelle verte'
@@ -1218,7 +1212,7 @@ automation poubelle_verte:
   condition:
   - condition: state
     entity_id: sensor.poubelle_verte
-    state: "tomorrow"
+    state: "Tomorrow"
   action:
   - service: notify.notify
     data:
@@ -1241,7 +1235,7 @@ automation poubelle_jaune:
   condition:
   - condition: state
     entity_id: sensor.poubelle_jaune
-    state: "tomorrow"
+    state: "Tomorrow"
   action:
   - service: notify.notify
     data:
