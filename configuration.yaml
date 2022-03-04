@@ -369,154 +369,6 @@ automation chauffage_leandre:
         temperature: 17
 
 #####################################################################
-# GESTION CHAUFFAGE CHAMBRE LOIS
-#####################################################################
-
-# automation chauffage_lois:
-#   - alias: Arrêt du thermostat sur ouverture des fenêtres
-#     trigger:
-#       - entity_id: binary_sensor.zigbee_capteur_ouverture_fenetre_chambre_lois_on_off
-#         platform: state
-#         to: 'on'
-#         for:
-#           minutes: 1
-#     action:
-#       - service: climate.turn_off
-#         entity_id: climate.thermostat_chambre_lois
-#   - alias: Relance du thermostat sur ouverture de la fenêtre
-#     trigger:
-#       - entity_id: binary_sensor.zigbee_capteur_ouverture_fenetre_chambre_lois_on_off
-#         platform: state
-#         to: 'off'
-#         for:
-#           minutes: 1
-#     action:
-#       - service: climate.turn_on
-#         entity_id: climate.thermostat_chambre_lois
-#   - alias: Passage en consigne CONFORT le matin
-#     trigger:
-#     - platform: time
-#       at: '06:45'
-#     condition:
-#       condition: template
-#       value_template: "{{ not is_state('input_select.input_select_mode_maison', 'Vacances') }}"
-#     action:
-#     - service: climate.set_temperature
-#       data:
-#         entity_id: climate.thermostat_chambre_lois
-#         temperature: 16
-#   - alias: Passage en consigne ECO pour la journée
-#     trigger:
-#     - platform: time
-#       at: '08:30'
-#     condition:
-#       condition: template
-#       value_template: "{{ not is_state('input_select.input_select_mode_maison', 'Vacances') }}"
-#     action:
-#     - service: climate.set_temperature
-#       data:
-#         entity_id: climate.thermostat_chambre_lois
-#         temperature: 16
-#   - alias: Passage en consigne CONFORT le soir
-#     trigger:
-#     - platform: time
-#       at: '18:00'
-#     condition:
-#       condition: template
-#       value_template: "{{ not is_state('input_select.input_select_mode_maison', 'Vacances') }}"
-#     action:
-#     - service: climate.set_temperature
-#       data:
-#         entity_id: climate.thermostat_chambre_lois
-#         temperature: 16
-#   - alias: Passage en consigne ECO pour la nuit
-#     trigger:
-#     - platform: time
-#       at: '22:00'
-#     condition:
-#       condition: template
-#       value_template: "{{ not is_state('input_select.input_select_mode_maison', 'Vacances') }}"
-#     action:
-#     - service: climate.set_temperature
-#       data:
-#         entity_id: climate.thermostat_chambre_lois
-#         temperature: 16
-
-#####################################################################
-# GESTION CHAUFFAGE CHAMBRE PARENTALE
-#####################################################################
-
-# automation chauffage_parents:
-#   - alias: Arrêt du thermostat sur ouverture des fenêtres
-#     trigger:
-#       - entity_id: binary_sensor.zigbee_capteur_ouverture_fenetre_chambre_parentale_on_off
-#         platform: state
-#         to: 'on'
-#         for:
-#           minutes: 1
-#     action:
-#       - service: climate.turn_off
-#         entity_id: climate.thermostat_chambre_parentale
-#   - alias: Relance du thermostat sur ouverture de la fenêtre
-#     trigger:
-#       - entity_id: binary_sensor.zigbee_capteur_ouverture_fenetre_chambre_parentale_on_off
-#         platform: state
-#         to: 'off'
-#         for:
-#           minutes: 1
-#     action:
-#       - service: climate.turn_on
-#         entity_id: climate.thermostat_chambre_parentale
-#   - alias: Passage en consigne CONFORT le matin
-#     trigger:
-#     - platform: time
-#       at: '06:45'
-#     condition:
-#       condition: template
-#       value_template: "{{ not is_state('input_select.input_select_mode_maison', 'Vacances') }}"
-#     action:
-#     - service: climate.set_temperature
-#       data:
-#         entity_id: climate.thermostat_chambre_parentale
-#         temperature: 16
-#   - alias: Passage en consigne ECO pour la journée
-#     trigger:
-#     - platform: time
-#       at: '08:30'
-#     condition:
-#       condition: template
-#       value_template: "{{ not is_state('input_select.input_select_mode_maison', 'Vacances') }}"
-#     action:
-#     - service: climate.set_temperature
-#       data:
-#         entity_id: climate.thermostat_chambre_parentale
-#         temperature: 16
-#   - alias: Passage en consigne CONFORT le soir
-#     trigger:
-#     - platform: time
-#       at: '21:15'
-#     condition:
-#       condition: template
-#       value_template: "{{ not is_state('input_select.input_select_mode_maison', 'Vacances') }}"
-#     action:
-#     - service: climate.set_temperature
-#       data:
-#         entity_id: climate.thermostat_chambre_parentale
-#         temperature: 17
-#   - alias: Passage en consigne ECO pour la nuit
-#     trigger:
-#     - platform: time
-#       at: '23:00'
-#     condition:
-#       condition: template
-#       value_template: "{{ not is_state('input_select.input_select_mode_maison', 'Vacances') }}"
-#     action:
-#     - service: climate.set_temperature
-#       data:
-#         entity_id: climate.thermostat_chambre_parentale
-#         temperature: 16
-
-#####################################################################
 # GESTION CHAUFFAGE BUREAU
 #####################################################################
 
@@ -925,11 +777,6 @@ automation mode_maison:
             Vacances
           {% endif %}
 
-#          {% elif now().weekday() in (2,3) %}
-#            Travail
-#          {% elif now().weekday() in (4) %}
-#            Télétravail
-
 #####################################################################
 # Lumières à partir des switches
 #####################################################################
@@ -1188,17 +1035,6 @@ automation lumiere_placard_julie:
       target:
         entity_id: light.placard_julie
   mode: restart
-
-#garbage_collection:
-#  sensors:
-#  - name: Poubelle JAUNE # Each week on Wednesday
-#    frequency: "even-weeks"
-#    collection_days: tue
-#    verbose_state: True
-#  - name: Poubelle VERTE # Each week on Wednesday
-#    frequency: "odd-weeks"
-#    collection_days: tue
-#    verbose_state: True
 
 automation poubelle_verte:
   alias: 'Notification + message TTS poubelle verte'
