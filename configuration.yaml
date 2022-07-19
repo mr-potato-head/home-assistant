@@ -25,6 +25,20 @@ lovelace:
 frontend:
   themes: !include_dir_merge_named themes
 
+influxdb:
+  api_version: 2
+  ssl: false
+  host: !secret influxdb_host
+  port: !secret influxdb_port
+  token: !secret influxdb_token
+  organization: !secret influxdb_organization
+  bucket: !secret influxdb_bucket
+  tags:
+    source: HA
+  tags_attributes:
+    - friendly_name
+  default_measurement: units
+
 #####################################################################
 # THERMOSTATS
 #####################################################################
@@ -1048,7 +1062,7 @@ automation poubelle_verte:
   condition:
   - condition: state
     entity_id: sensor.poubelle_verte
-    state: "Tomorrow"
+    state: "tomorrow"
   action:
   - service: notify.notify
     data:
@@ -1071,7 +1085,7 @@ automation poubelle_jaune:
   condition:
   - condition: state
     entity_id: sensor.poubelle_jaune
-    state: "Tomorrow"
+    state: "tomorrow"
   action:
   - service: notify.notify
     data:
