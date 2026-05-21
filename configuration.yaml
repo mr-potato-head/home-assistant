@@ -8,7 +8,7 @@ tts:
 
 group: !include groups.yaml
 automation: !include automations.yaml
-script: !include scripts.yaml
+#script: !include scripts.yaml
 scene: !include scenes.yaml
 
 lovelace:
@@ -25,19 +25,19 @@ lovelace:
 frontend:
   themes: !include_dir_merge_named themes
 
-influxdb:
-  api_version: 2
-  ssl: false
-  host: !secret influxdb_host
-  port: !secret influxdb_port
-  token: !secret influxdb_token
-  organization: !secret influxdb_organization
-  bucket: !secret influxdb_bucket
-  tags:
-    source: HA
-  tags_attributes:
-    - friendly_name
-  default_measurement: units
+#influxdb:
+#  api_version: 2
+#  ssl: false
+#  host: !secret influxdb_host
+#  port: !secret influxdb_port
+#  token: !secret influxdb_token
+#  organization: !secret influxdb_organization
+#  bucket: !secret influxdb_bucket
+#  tags:
+#    source: HA
+#  tags_attributes:
+#    - friendly_name
+#  default_measurement: units
 
 #####################################################################
 # THERMOSTATS
@@ -102,131 +102,6 @@ climate:
     target_sensor: sensor.zigbee_capteur_temperature_chambre_parentale_temperature
 
 #####################################################################
-# SWITCH ON/OFF DES RADIATEURS
-#####################################################################
-
-switch:
-  - platform: template
-    switches:
-      switch_radiateur_salle_de_bain:
-        turn_on:
-          - service: climate.set_preset_mode
-            target:
-              entity_id: climate.zmnhjd1_light_converter_salle_de_bain
-            data:
-              preset_mode: "comfort"
-        turn_off:
-          - service: climate.set_preset_mode
-            target:
-              entity_id: climate.zmnhjd1_light_converter_salle_de_bain
-            data:
-              preset_mode: "off"
-
-      switch_radiateur_bureau:
-        turn_on:
-          - service: climate.set_preset_mode
-            target:
-              entity_id: climate.zmnhjd1_light_converter_bureau
-            data:
-              preset_mode: "comfort"
-        turn_off:
-          - service: climate.set_preset_mode
-            target:
-              entity_id: climate.zmnhjd1_light_converter_bureau
-            data:
-              preset_mode: "off"
-
-      switch_radiateur_salle_de_jeux:
-        turn_on:
-          - service: climate.set_preset_mode
-            target:
-              entity_id: climate.zmnhjd1_light_converter_salle_de_jeux
-            data:
-              preset_mode: "comfort"
-        turn_off:
-          - service: climate.set_preset_mode
-            target:
-              entity_id: climate.zmnhjd1_light_converter_salle_de_jeux
-            data:
-              preset_mode: "off"
-
-      switch_radiateur_salon:
-        turn_on:
-          - service: climate.set_preset_mode
-            target:
-              entity_id: climate.zmnhjd1_light_converter_salon
-            data:
-              preset_mode: "comfort"
-          - service: climate.set_preset_mode
-            target:
-              entity_id: climate.zmnhjd1_light_converter_salle_a_manger
-            data:
-              preset_mode: "comfort"
-          - service: climate.set_preset_mode
-            target:
-              entity_id: climate.zmnhjd1_light_converter_cuisine
-            data:
-              preset_mode: "comfort"
-        turn_off:
-          - service: climate.set_preset_mode
-            target:
-              entity_id: climate.zmnhjd1_light_converter_salon
-            data:
-              preset_mode: "off"
-          - service: climate.set_preset_mode
-            target:
-              entity_id: climate.zmnhjd1_light_converter_salle_a_manger
-            data:
-              preset_mode: "off"
-          - service: climate.set_preset_mode
-            target:
-              entity_id: climate.zmnhjd1_light_converter_cuisine
-            data:
-              preset_mode: "off"
-
-      switch_radiateur_chambre_lois:
-        turn_on:
-          - service: climate.set_preset_mode
-            target:
-              entity_id: climate.zmnhjd1_light_converter_chambre_lois
-            data:
-              preset_mode: "comfort"
-        turn_off:
-          - service: climate.set_preset_mode
-            target:
-              entity_id: climate.zmnhjd1_light_converter_chambre_lois
-            data:
-              preset_mode: "off"
-
-      switch_radiateur_chambre_leandre:
-        turn_on:
-          - service: climate.set_preset_mode
-            target:
-              entity_id: climate.zmnhjd1_light_converter_chambre_leandre
-            data:
-              preset_mode: "comfort"
-        turn_off:
-          - service: climate.set_preset_mode
-            target:
-              entity_id: climate.zmnhjd1_light_converter_chambre_leandre
-            data:
-              preset_mode: "off"
-
-      switch_radiateur_chambre_parentale:
-        turn_on:
-          - service: climate.set_preset_mode
-            target:
-              entity_id: climate.zmnhjd1_light_converter_chambre_parentale
-            data:
-              preset_mode: "comfort"
-        turn_off:
-          - service: climate.set_preset_mode
-            target:
-              entity_id: climate.zmnhjd1_light_converter_chambre_parentale
-            data:
-              preset_mode: "off"
-
-#####################################################################
 # GESTION CHAUFFE EAU CUISINE
 #####################################################################
 
@@ -237,42 +112,76 @@ automation chauffe_eau_cuisine:
       at: '06:30'
     action:
     - service: switch.turn_on
-      entity_id: switch.zigbee_prise_chauffe_eau_cuisine_on_off
+      entity_id: switch.zwave_prise_chauffe_eau
   - alias: Extinction du chauffe-eau le matin
     trigger:
     - platform: time
       at: '08:30'
     action:
     - service: switch.turn_off
-      entity_id: switch.zigbee_prise_chauffe_eau_cuisine_on_off
+      entity_id: switch.zwave_prise_chauffe_eau
   - alias: Allumage du chauffe-eau le midi
     trigger:
     - platform: time
       at: '11:30'
     action:
     - service: switch.turn_on
-      entity_id: switch.zigbee_prise_chauffe_eau_cuisine_on_off
+      entity_id: switch.zwave_prise_chauffe_eau
   - alias: Extinction du chauffe-eau le midi
     trigger:
     - platform: time
       at: '13:30'
     action:
     - service: switch.turn_off
-      entity_id: switch.zigbee_prise_chauffe_eau_cuisine_on_off
+      entity_id: switch.zwave_prise_chauffe_eau
   - alias: Allumage du chauffe-eau le soir
     trigger:
     - platform: time
       at: '18:00'
     action:
     - service: switch.turn_on
-      entity_id: switch.zigbee_prise_chauffe_eau_cuisine_on_off
+      entity_id: switch.zwave_prise_chauffe_eau
   - alias: Extinction du chauffe-eau le soir
     trigger:
     - platform: time
       at: '21:00'
     action:
     - service: switch.turn_off
-      entity_id: switch.zigbee_prise_chauffe_eau_cuisine_on_off
+      entity_id: switch.zwave_prise_chauffe_eau
+
+#####################################################################
+# GESTION CHAUFFE EAU WV Etage
+#####################################################################
+
+automation chauffe_eau_wc:
+  - alias: Allumage du chauffe-eau le matin
+    trigger:
+    - platform: time
+      at: '06:00'
+    action:
+    - service: switch.turn_on
+      entity_id: switch.zigbee_prise_chauffe_eau_wc_switch
+  - alias: Extinction du chauffe-eau le matin
+    trigger:
+    - platform: time
+      at: '08:00'
+    action:
+    - service: switch.turn_off
+      entity_id: switch.zigbee_prise_chauffe_eau_wc_switch
+  - alias: Allumage du chauffe-eau le soir
+    trigger:
+    - platform: time
+      at: '19:00'
+    action:
+    - service: switch.turn_on
+      entity_id: switch.zigbee_prise_chauffe_eau_wc_switch
+  - alias: Extinction du chauffe-eau le soir
+    trigger:
+    - platform: time
+      at: '21:00'
+    action:
+    - service: switch.turn_off
+      entity_id: switch.zigbee_prise_chauffe_eau_wc_switch
 
 #####################################################################
 # GESTION CHAUFFAGE CHAMBRE LEANDRE
@@ -320,7 +229,7 @@ automation chauffage_leandre:
     - service: climate.set_temperature
       data:
         entity_id: climate.thermostat_chambre_leandre
-        temperature: 18
+        temperature: 17.5
   - alias: Passage en consigne ECO pour la journée
     trigger:
     - platform: time
@@ -332,31 +241,31 @@ automation chauffage_leandre:
     - service: climate.set_temperature
       data:
         entity_id: climate.thermostat_chambre_leandre
-        temperature: 16
-  - alias: Passage en consigne CONFORT pour la sieste
-    trigger:
-    - platform: time
-      at: '13:00'
-    condition:
-      condition: template
-      value_template: "{{ is_state('input_select.input_select_mode_maison', 'Weekend') }}"
-    action:
-    - service: climate.set_temperature
-      data:
-        entity_id: climate.thermostat_chambre_leandre
-        temperature: 17
-  - alias: Passage en consigne ECO après la sieste
-    trigger:
-    - platform: time
-      at: '16:00'
-    condition:
-      condition: template
-      value_template: "{{ is_state('input_select.input_select_mode_maison', 'Weekend') }}"
-    action:
-    - service: climate.set_temperature
-      data:
-        entity_id: climate.thermostat_chambre_leandre
-        temperature: 16
+        temperature: 14
+  #- alias: Passage en consigne CONFORT pour la sieste
+  #  trigger:
+  #  - platform: time
+  #    at: '13:00'
+  #  condition:
+  #    condition: template
+  #    value_template: "{{ is_state('input_select.input_select_mode_maison', 'Weekend') }}"
+  #  action:
+  #  - service: climate.set_temperature
+  #    data:
+  #      entity_id: climate.thermostat_chambre_leandre
+  #      temperature: 17
+  #- alias: Passage en consigne ECO après la sieste
+  #  trigger:
+  #  - platform: time
+  #    at: '16:00'
+  #  condition:
+  #    condition: template
+  #    value_template: "{{ is_state('input_select.input_select_mode_maison', 'Weekend') }}"
+  #  action:
+  #  - service: climate.set_temperature
+  #    data:
+  #     entity_id: climate.thermostat_chambre_leandre
+  #      temperature: 16
   - alias: Passage en consigne CONFORT le soir
     trigger:
     - platform: time
@@ -430,7 +339,7 @@ automation chauffage_bureau:
     - service: climate.set_temperature
       data:
         entity_id: climate.thermostat_bureau
-        temperature: 16
+        temperature: 14
 
 #####################################################################
 # GESTION CHAUFFAGE CHAMBRE PARENTALE
@@ -468,7 +377,7 @@ automation chauffage_chambre_parentale:
     - service: climate.set_temperature
       data:
         entity_id: climate.thermostat_chambre_parentale
-        temperature: 17.5
+        temperature: 17
   - alias: Passage en consigne ECO pour la journée
     trigger:
     - platform: time
@@ -480,7 +389,7 @@ automation chauffage_chambre_parentale:
     - service: climate.set_temperature
       data:
         entity_id: climate.thermostat_chambre_parentale
-        temperature: 16
+        temperature: 14
   - alias: Passage en consigne CONFORT le soir
     trigger:
     - platform: time
@@ -492,7 +401,7 @@ automation chauffage_chambre_parentale:
     - service: climate.set_temperature
       data:
         entity_id: climate.thermostat_chambre_parentale
-        temperature: 17.5
+        temperature: 17
   - alias: Passage en consigne ECO pour la nuit
     trigger:
     - platform: time
@@ -504,7 +413,7 @@ automation chauffage_chambre_parentale:
     - service: climate.set_temperature
       data:
         entity_id: climate.thermostat_chambre_parentale
-        temperature: 16
+        temperature: 15
 
 
 #####################################################################
@@ -555,7 +464,7 @@ automation chauffage_salle_de_jeux:
     - service: climate.set_temperature
       data:
         entity_id: climate.thermostat_salle_de_jeux
-        temperature: 16
+        temperature: 15
   - alias: Passage en consigne CONFORT le soir
     trigger:
     - platform: time
@@ -579,7 +488,7 @@ automation chauffage_salle_de_jeux:
     - service: climate.set_temperature
       data:
         entity_id: climate.thermostat_salle_de_jeux
-        temperature: 16
+        temperature: 15
 
 #####################################################################
 # GESTION CHAUFFAGE SALON
@@ -657,7 +566,7 @@ automation chauffage_salon:
     - service: climate.set_temperature
       data:
         entity_id: climate.thermostat_salon
-        temperature: 18
+        temperature: 17.5
   - alias: Passage en consigne ECO pour la journée
     trigger:
     - platform: time
@@ -669,7 +578,7 @@ automation chauffage_salon:
     - service: climate.set_temperature
       data:
         entity_id: climate.thermostat_salon
-        temperature: 16
+        temperature: 14
   - alias: Passage en consigne CONFORT le soir
     trigger:
     - platform: time
@@ -681,7 +590,7 @@ automation chauffage_salon:
     - service: climate.set_temperature
       data:
         entity_id: climate.thermostat_salon
-        temperature: 18
+        temperature: 17.5
   - alias: Passage en consigne ECO pour la nuit
     trigger:
     - platform: time
@@ -693,7 +602,7 @@ automation chauffage_salon:
     - service: climate.set_temperature
       data:
         entity_id: climate.thermostat_salon
-        temperature: 16
+        temperature: 14
 
 #####################################################################
 # GESTION CHAUFFAGE SALLE DE BAIN
@@ -731,7 +640,7 @@ automation chauffage_salle_de_bain:
     - service: climate.set_temperature
       data:
         entity_id: climate.thermostat_salle_de_bain
-        temperature: 18
+        temperature: 17
   - alias: Passage en consigne ECO pour la journée
     trigger:
     - platform: time
@@ -743,7 +652,7 @@ automation chauffage_salle_de_bain:
     - service: climate.set_temperature
       data:
         entity_id: climate.thermostat_salle_de_bain
-        temperature: 16
+        temperature: 14
   - alias: Passage en consigne CONFORT le soir
     trigger:
     - platform: time
@@ -767,7 +676,7 @@ automation chauffage_salle_de_bain:
     - service: climate.set_temperature
       data:
         entity_id: climate.thermostat_salle_de_bain
-        temperature: 16
+        temperature: 14
 
 #####################################################################
 # GESTION DU MODE GLOBAL DE LA MAISON
@@ -784,7 +693,7 @@ automation mode_maison:
         entity_id: input_select.input_select_mode_maison
         option: >
           {% if now().weekday() in (0,1,2,3,4) %}
-            Télétravail
+            Travail
           {% elif now().weekday() in (5,6) %}
             Weekend
           {% else %}
@@ -800,38 +709,20 @@ light:
     name: Terrasse
     entity_id: switch.zwave_relais_lumieres_terrasse_on_off
   - platform: switch
-    name: Garage
-    entity_id: switch.zigbee_prise_lumiere_garage_on_off
-  - platform: switch
-    name: Escalier
-    entity_id: switch.zigbee_relai_lumiere_escalier_sous_sol_on_off
-  - platform: switch
     name: Salon
     entity_id: switch.zigbee_prise_lumiere_salon_on_off
   - platform: switch
     name: Placard_Julie
     entity_id: switch.zigbee_switch_lumiere_placard_julie_on_off
+  - platform: switch
+    name: Nord
+    entity_id: switch.zwave_switch_north_light_on_off
+  - platform: switch
+    name: Garage
+    entity_id: switch.zigbee_relai_lumiere_garage_switch
 
 #####################################################################
 # Porte garage
-#####################################################################
-cover:
-  - platform: template
-    covers:
-      garage_door:
-        device_class: garage
-        friendly_name: Porte garage
-        value_template: "{{ is_state('binary_sensor.zigbee_capteur_ouverture_porte_garage_on_off', 'on') }}"
-        open_cover:
-          service: switch.turn_on
-          entity_id: switch.zwave_relais_porte_garage_on_off
-        close_cover:
-          service: switch.turn_on
-          entity_id: switch.zwave_relais_porte_garage_on_off
-        stop_cover:
-          service: switch.turn_on
-          entity_id: switch.zwave_relais_porte_garage_on_off
-
 #####################################################################
 # Délestage
 #####################################################################
@@ -999,22 +890,63 @@ automation alarme_volumetrique:
     service: alarm_control_panel.alarm_trigger
     target:
       entity_id: alarm_control_panel.alarm
+      
+automation notif_activation_alarme:
+  - alias: 'Notification activation alarme'
+    trigger:
+      - platform: state
+        entity_id: alarm_control_panel.alarm
+        to: "arming"
+    action:
+    - service: notify.notify
+      data:
+        message: "Activation alarme."
 
 automation message_declenchement_alarme:
   - alias: 'Message déclenchement alarme'
     trigger:
       - platform: state
         entity_id: alarm_control_panel.alarm
-        to: "triggered"
+        to: "pending"
     action:
     - service: notify.notify
       data:
-        message: "ALARME ! Déclenchement alarme."
+        message: "ALARME ! Déclenchement alarme (PENDING)."
     - service: tts.cloud_say
       data:
         entity_id: all
         message: "Intrusion détectée. Déclenchement sirène imminent."
         language: "fr-FR"
+
+automation sirene_alarme_on:
+  - alias: 'Sirene Alarme ON'
+    trigger:
+      - platform: state
+        entity_id: alarm_control_panel.alarm
+        to: "triggered"
+    action:
+      - service: notify.notify
+        data:
+          message: "Déclenchement sirène alarme"
+      - service: switch.turn_on
+        entity_id: switch.zigbee_prise_sirene_switch
+        
+automation sirene_alarme_off:
+  - alias: 'Sirene Alarme OFF'
+    trigger:
+      - platform: state
+        entity_id: alarm_control_panel.alarm
+        to: "disarmed"
+    action:
+      - service: notify.notify
+        data:
+          message: "Arrêt sirène alarme"
+      - service: switch.turn_off
+        entity_id: switch.zigbee_prise_sirene_switch
+
+#####################################################################
+# Lumière placards chambre parentale
+#####################################################################
 
 automation lumiere_placard_guilhem:
   alias: 'Allumage temporisé du ruban LED placard Guilhem'
@@ -1050,28 +982,72 @@ automation lumiere_placard_julie:
         entity_id: light.placard_julie
   mode: restart
 
-automation poubelle_verte:
-  alias: 'Notification + message TTS poubelle verte'
+#####################################################################
+# Pompe à eau - Temporisation
+#####################################################################
+
+automation coupure_pompe_auto:
+  alias: 'Exctinction automatique pompe'
   trigger:
-  - platform: time
-    at: '19:30'
-  - platform: time
-    at: '20:00'
-  - platform: time
-    at: '20:30'
-  condition:
-  - condition: state
-    entity_id: sensor.poubelle_verte
-    state: "tomorrow"
+    - platform: state
+      entity_id: switch.zwave_switch_pompe_on_off
+      to: 'on'
   action:
-  - service: notify.notify
-    data:
-      message: "Poubelle VERTE."
-  - service: tts.cloud_say
-    data:
-      entity_id: all
-      message: "Il faut sortir la poubelle verte."
-      language: "fr-FR"
+    - delay:
+        minutes: 10
+    - service: switch.turn_off
+      target:
+        entity_id: switch.zwave_switch_pompe_on_off
+
+#automation poubelle_verte:
+#  alias: 'Notification + message TTS poubelle verte'
+#  trigger:
+#  - platform: time
+#    at: '19:30'
+#  - platform: time
+#    at: '20:00'
+#  - platform: time
+#    at: '20:30'
+#  condition:
+#  - condition: state
+#    entity_id: sensor.poubelle_verte
+#    state: "tomorrow"
+#  action:
+#  - service: notify.notify
+#    data:
+#      message: "Poubelle VERTE."
+#  - service: tts.cloud_say
+#    data:
+#      entity_id: all
+#      message: "Il faut sortir la poubelle verte."
+#      language: "fr-FR"
+
+#automation poubelle_jaune:
+#  alias: 'Notification + message TTS poubelle jaune'
+#  trigger:
+#  - platform: time
+#    at: '19:30'
+#  - platform: time
+#    at: '20:00'
+#  - platform: time
+#    at: '20:30'
+#  condition:
+#  - condition: state
+#    entity_id: sensor.poubelle_jaune
+#    state: "tomorrow"
+#  action:
+#  - service: notify.notify
+#    data:
+#      message: "Poubelle JAUNE."
+#  - service: tts.cloud_say
+#    data:
+#      entity_id: all
+#      message: "Il faut sortir la poubelle jaune."
+#      language: "fr-FR"
+
+#####################################################################
+# Gestions des poubelles
+#####################################################################
 
 automation poubelle_jaune:
   alias: 'Notification + message TTS poubelle jaune'
@@ -1084,8 +1060,8 @@ automation poubelle_jaune:
     at: '20:30'
   condition:
   - condition: state
-    entity_id: sensor.poubelle_jaune
-    state: "tomorrow"
+    entity_id: sensor.yellow_garbage_collection_days
+    state: '1'
   action:
   - service: notify.notify
     data:
@@ -1095,6 +1071,33 @@ automation poubelle_jaune:
       entity_id: all
       message: "Il faut sortir la poubelle jaune."
       language: "fr-FR"
+
+automation poubelle_verte:
+  alias: 'Notification + message TTS poubelle verte'
+  trigger:
+  - platform: time
+    at: '19:30'
+  - platform: time
+    at: '20:00'
+  - platform: time
+    at: '20:30'
+  condition:
+  - condition: state
+    entity_id: sensor.green_garbage_collection_days
+    state: '1'
+  action:
+  - service: notify.notify
+    data:
+      message: "Poubelle VERTE."
+  - service: tts.cloud_say
+    data:
+      entity_id: all
+      message: "Il faut sortir la poubelle verte."
+      language: "fr-FR"
+
+#####################################################################
+# Nombre de portes / fenêtres ouvertes
+#####################################################################
 
 template:
   - sensor:
@@ -1156,6 +1159,202 @@ template:
     - name: "time_fr"
       state: "{{ as_timestamp(states('sensor.date_time_iso')) | timestamp_custom('%H:%M') }}"
       icon: "mdi:calendar-clock"
+    - name: green_garbage_collection_days
+      state: >-
+        {{ min(((state_attr('calendar.green_garbage', 'start_time') | as_timestamp - today_at('00:00') | as_timestamp) / 86400) | int, 2) }}
+      attributes:
+        days: >-
+            {{ ((state_attr('calendar.green_garbage', 'start_time') | as_timestamp - today_at('00:00') | as_timestamp) / 86400) | int }}
+    - name: yellow_garbage_collection_days
+      state: >-
+        {{ min(((state_attr('calendar.yellow_garbage', 'start_time') | as_timestamp - today_at('00:00') | as_timestamp) / 86400) | int, 2) }}
+      attributes:
+        days: >-
+            {{ ((state_attr('calendar.yellow_garbage', 'start_time') | as_timestamp - today_at('00:00') | as_timestamp) / 86400) | int }}
+
+    # Migrés depuis l'ancien bloc de capteurs template legacy
+    - default_entity_id: sensor.consigne_salon
+      name: consigne_salon
+      state: "{{ state_attr('climate.thermostat_salon', 'temperature') }}"
+    - default_entity_id: sensor.consigne_bureau
+      name: consigne_bureau
+      state: "{{ state_attr('climate.thermostat_bureau', 'temperature') }}"
+    - default_entity_id: sensor.consigne_salle_de_bain
+      name: consigne_salle_de_bain
+      state: "{{ state_attr('climate.thermostat_salle_de_bain', 'temperature') }}"
+    - default_entity_id: sensor.consigne_salle_de_jeux
+      name: consigne_salle_de_jeux
+      state: "{{ state_attr('climate.thermostat_salle_de_jeux', 'temperature') }}"
+    - default_entity_id: sensor.consigne_chambre_parentale
+      name: consigne_chambre_parentale
+      state: "{{ state_attr('climate.thermostat_chambre_parentale', 'temperature') }}"
+    - default_entity_id: sensor.consigne_chambre_leandre
+      name: consigne_chambre_leandre
+      state: "{{ state_attr('climate.thermostat_chambre_leandre', 'temperature') }}"
+    - default_entity_id: sensor.consigne_chambre_lois
+      name: consigne_chambre_lois
+      state: "{{ state_attr('climate.thermostat_chambre_lois', 'temperature') }}"
+    - default_entity_id: sensor.power_consumed_from_grid
+      name: "Power Consumed from Grid"
+      state: >
+        {{ max(states.sensor.zwave_capteur_energie_electrique_puissance_w.state | int, 0) | default(0)}}
+      device_class: power
+      unit_of_measurement: "W"
+    - default_entity_id: sensor.power_return_to_grid
+      name: "Power Returning to Grid"
+      state: >
+        {{ min(states.sensor.zwave_capteur_energie_electrique_puissance_w.state | int, 0) | abs | default(0)}}
+      device_class: power
+      unit_of_measurement: "W"
+
+  - switch:
+    # Migrés depuis l'ancien bloc d'interrupteurs template legacy
+    - default_entity_id: switch.switch_radiateur_salle_de_bain
+      name: switch_radiateur_salle_de_bain
+      turn_on:
+        - service: climate.set_preset_mode
+          target:
+            entity_id: climate.zmnhjd1_light_converter_salle_de_bain
+          data:
+            preset_mode: comfort
+      turn_off:
+        - service: climate.set_preset_mode
+          target:
+            entity_id: climate.zmnhjd1_light_converter_salle_de_bain
+          data:
+            preset_mode: away
+    - default_entity_id: switch.switch_radiateur_bureau
+      name: switch_radiateur_bureau
+      turn_on:
+        - service: climate.set_preset_mode
+          target:
+            entity_id: climate.zmnhjd1_light_converter_bureau
+          data:
+            preset_mode: comfort
+      turn_off:
+        - service: climate.set_preset_mode
+          target:
+            entity_id: climate.zmnhjd1_light_converter_bureau
+          data:
+            preset_mode: away
+    - default_entity_id: switch.switch_radiateur_salle_de_jeux
+      name: switch_radiateur_salle_de_jeux
+      turn_on:
+        - service: climate.set_preset_mode
+          target:
+            entity_id: climate.zmnhjd1_light_converter_salle_de_jeux
+          data:
+            preset_mode: comfort
+      turn_off:
+        - service: climate.set_preset_mode
+          target:
+            entity_id: climate.zmnhjd1_light_converter_salle_de_jeux
+          data:
+            preset_mode: away
+    - default_entity_id: switch.switch_radiateur_salon
+      name: switch_radiateur_salon
+      turn_on:
+        - service: climate.set_preset_mode
+          target:
+            entity_id: climate.zmnhjd1_light_converter_salon
+          data:
+            preset_mode: comfort
+        - service: climate.set_preset_mode
+          target:
+            entity_id: climate.zmnhjd1_light_converter_salle_a_manger
+          data:
+            preset_mode: comfort
+        - service: climate.set_preset_mode
+          target:
+            entity_id: climate.zmnhjd1_light_converter_cuisine
+          data:
+            preset_mode: comfort
+      turn_off:
+        - service: climate.set_preset_mode
+          target:
+            entity_id: climate.zmnhjd1_light_converter_salon
+          data:
+            preset_mode: away
+        - service: climate.set_preset_mode
+          target:
+            entity_id: climate.zmnhjd1_light_converter_salle_a_manger
+          data:
+            preset_mode: away
+        - service: climate.set_preset_mode
+          target:
+            entity_id: climate.zmnhjd1_light_converter_cuisine
+          data:
+            preset_mode: away
+    - default_entity_id: switch.switch_radiateur_chambre_lois
+      name: switch_radiateur_chambre_lois
+      turn_on:
+        - service: climate.set_preset_mode
+          target:
+            entity_id: climate.zmnhjd1_light_converter_chambre_lois
+          data:
+            preset_mode: comfort
+      turn_off:
+        - service: climate.set_preset_mode
+          target:
+            entity_id: climate.zmnhjd1_light_converter_chambre_lois
+          data:
+            preset_mode: away
+    - default_entity_id: switch.switch_radiateur_chambre_leandre
+      name: switch_radiateur_chambre_leandre
+      turn_on:
+        - service: climate.set_preset_mode
+          target:
+            entity_id: climate.zmnhjd1_light_converter_chambre_leandre
+          data:
+            preset_mode: comfort
+      turn_off:
+        - service: climate.set_preset_mode
+          target:
+            entity_id: climate.zmnhjd1_light_converter_chambre_leandre
+          data:
+            preset_mode: away
+    - default_entity_id: switch.switch_radiateur_chambre_parentale
+      name: switch_radiateur_chambre_parentale
+      turn_on:
+        - service: climate.set_preset_mode
+          target:
+            entity_id: climate.zmnhjd1_light_converter_chambre_parentale
+          data:
+            preset_mode: comfort
+      turn_off:
+        - service: climate.set_preset_mode
+          target:
+            entity_id: climate.zmnhjd1_light_converter_chambre_parentale
+          data:
+            preset_mode: away
+
+  - cover:
+    # Migré depuis l'ancien bloc de volet/porte template legacy
+    - default_entity_id: cover.garage_door
+      name: "Porte garage"
+      device_class: garage
+      state: "{{ is_state('binary_sensor.zigbee_capteur_ouverture_porte_garage_on_off', 'on') }}"
+      open_cover:
+        service: switch.turn_on
+        entity_id: switch.zwave_relais_porte_garage_on_off
+      close_cover:
+        service: switch.turn_on
+        entity_id: switch.zwave_relais_porte_garage_on_off
+      stop_cover:
+        service: switch.turn_on
+        entity_id: switch.zwave_relais_porte_garage_on_off
+
+
+sensor:
+  - platform: time_date
+    display_options:
+    - time
+    - date
+    - date_time
+    - date_time_utc
+    - date_time_iso
+    - time_date
+    - time_utc
 
 script:
   temperature_up:
@@ -1170,39 +1369,11 @@ script:
       data_template:
         entity_id: "{{ climate_id }}"
         temperature: "{{ state_attr(climate_id, 'temperature') | float - value  }}"
-
-sensor:
-  - platform: template
-    sensors:
-      consigne_salon:
-        value_template: "{{ state_attr('climate.thermostat_salon', 'temperature') }}"
-      consigne_bureau:
-        value_template: "{{ state_attr('climate.thermostat_bureau', 'temperature') }}"
-      consigne_salle_de_bain:
-        value_template: "{{ state_attr('climate.thermostat_salle_de_bain', 'temperature') }}"
-      consigne_salle_de_jeux:
-        value_template: "{{ state_attr('climate.thermostat_salle_de_jeux', 'temperature') }}"
-      consigne_chambre_parentale:
-        value_template: "{{ state_attr('climate.thermostat_chambre_parentale', 'temperature') }}"
-      consigne_chambre_leandre:
-        value_template: "{{ state_attr('climate.thermostat_chambre_leandre', 'temperature') }}"
-      consigne_chambre_lois:
-        value_template: "{{ state_attr('climate.thermostat_chambre_lois', 'temperature') }}"
-        
-  - platform: time_date
-    display_options:
-      - 'time'
-      - 'date'
-      - 'date_time'
-      - 'date_time_utc'
-      - 'date_time_iso'
-      - 'time_date'
-      - 'time_utc'
-      - 'beat'
+#  
+#fan:
+#- platform: xiaomi_miio_fan
+#  name: Xiaomi Smart Fan
+#  host: 192.168.1.138
+#  token: !secret xiaomi_fan_token
+#  model: dmaker.fan.p18
   
-fan:
-- platform: xiaomi_miio_fan
-  name: Xiaomi Smart Fan
-  host: 192.168.1.138
-  token: !secret xiaomi_fan_token
-  model: dmaker.fan.p18
