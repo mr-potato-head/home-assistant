@@ -1,19 +1,22 @@
 
-# Configure a default setup of Home Assistant (frontend, api, etc)
+# Core Home Assistant integrations enabled through default_config.
 default_config:
 
-# Text to speech
+# Text-to-speech providers.
 tts:
   - platform: google_translate
 
+# Group definitions loaded from the standard include file.
 group: !include groups.yaml
+# Automation definitions loaded from the standard include file.
 automation: !include automations.yaml
-#script: !include scripts.yaml
+# Scene definitions loaded from the standard include file.
 scene: !include scenes.yaml
 
+# Lovelace dashboard configuration.
 lovelace:
   mode: storage
-  # Add yaml dashboards
+  # Register YAML-backed Lovelace dashboards.
   dashboards:
     lovelace-yaml:
       mode: yaml
@@ -22,25 +25,12 @@ lovelace:
       show_in_sidebar: true
       filename: lovelace.yaml
 
+# Frontend theme configuration.
 frontend:
   themes: !include_dir_merge_named themes
 
-#influxdb:
-#  api_version: 2
-#  ssl: false
-#  host: !secret influxdb_host
-#  port: !secret influxdb_port
-#  token: !secret influxdb_token
-#  organization: !secret influxdb_organization
-#  bucket: !secret influxdb_bucket
-#  tags:
-#    source: HA
-#  tags_attributes:
-#    - friendly_name
-#  default_measurement: units
-
 #####################################################################
-# THERMOSTATS
+# Climate Entities
 #####################################################################
 
 climate:
@@ -102,7 +92,7 @@ climate:
     target_sensor: sensor.zigbee_capteur_temperature_chambre_parentale_temperature
 
 #####################################################################
-# GESTION CHAUFFE EAU CUISINE
+# Kitchen Water Heater Automation
 #####################################################################
 
 automation chauffe_eau_cuisine:
@@ -150,7 +140,7 @@ automation chauffe_eau_cuisine:
       entity_id: switch.zwave_prise_chauffe_eau
 
 #####################################################################
-# GESTION CHAUFFE EAU WV Etage
+# Upstairs WC Water Heater Automation
 #####################################################################
 
 automation chauffe_eau_wc:
@@ -184,7 +174,7 @@ automation chauffe_eau_wc:
       entity_id: switch.zigbee_prise_chauffe_eau_wc_switch
 
 #####################################################################
-# GESTION CHAUFFAGE CHAMBRE LEANDRE
+# Leandre Bedroom Heating Automation
 #####################################################################
 
 automation chauffage_leandre:
@@ -242,30 +232,6 @@ automation chauffage_leandre:
       data:
         entity_id: climate.thermostat_chambre_leandre
         temperature: 14
-  #- alias: Passage en consigne CONFORT pour la sieste
-  #  trigger:
-  #  - platform: time
-  #    at: '13:00'
-  #  condition:
-  #    condition: template
-  #    value_template: "{{ is_state('input_select.input_select_mode_maison', 'Weekend') }}"
-  #  action:
-  #  - service: climate.set_temperature
-  #    data:
-  #      entity_id: climate.thermostat_chambre_leandre
-  #      temperature: 17
-  #- alias: Passage en consigne ECO après la sieste
-  #  trigger:
-  #  - platform: time
-  #    at: '16:00'
-  #  condition:
-  #    condition: template
-  #    value_template: "{{ is_state('input_select.input_select_mode_maison', 'Weekend') }}"
-  #  action:
-  #  - service: climate.set_temperature
-  #    data:
-  #     entity_id: climate.thermostat_chambre_leandre
-  #      temperature: 16
   - alias: Passage en consigne CONFORT le soir
     trigger:
     - platform: time
@@ -292,7 +258,7 @@ automation chauffage_leandre:
         temperature: 17
 
 #####################################################################
-# GESTION CHAUFFAGE BUREAU
+# Office Heating Automation
 #####################################################################
 
 automation chauffage_bureau:
@@ -342,7 +308,7 @@ automation chauffage_bureau:
         temperature: 14
 
 #####################################################################
-# GESTION CHAUFFAGE CHAMBRE PARENTALE
+# Primary Bedroom Heating Automation
 #####################################################################
 
 automation chauffage_chambre_parentale:
@@ -417,7 +383,7 @@ automation chauffage_chambre_parentale:
 
 
 #####################################################################
-# GESTION CHAUFFAGE SALLE DE JEUX
+# Playroom Heating Automation
 #####################################################################
 
 automation chauffage_salle_de_jeux:
@@ -491,7 +457,7 @@ automation chauffage_salle_de_jeux:
         temperature: 15
 
 #####################################################################
-# GESTION CHAUFFAGE SALON
+# Living Area Heating Automation
 #####################################################################
 
 automation chauffage_salon:
@@ -605,7 +571,7 @@ automation chauffage_salon:
         temperature: 14
 
 #####################################################################
-# GESTION CHAUFFAGE SALLE DE BAIN
+# Bathroom Heating Automation
 #####################################################################
 
 automation chauffage_salle_de_bain:
@@ -679,7 +645,7 @@ automation chauffage_salle_de_bain:
         temperature: 14
 
 #####################################################################
-# GESTION DU MODE GLOBAL DE LA MAISON
+# Home Mode Automation
 #####################################################################
 
 automation mode_maison:
@@ -701,7 +667,7 @@ automation mode_maison:
           {% endif %}
 
 #####################################################################
-# Lumières à partir des switches
+# Switch-backed Light Entities
 #####################################################################
 
 light:
@@ -722,9 +688,7 @@ light:
     entity_id: switch.zigbee_relai_lumiere_garage_switch
 
 #####################################################################
-# Porte garage
-#####################################################################
-# Délestage
+# Load Shedding Timer and Automation
 #####################################################################
 
 timer:
@@ -806,7 +770,7 @@ automation delestage_test_superieur:
       entity_id: timer.delestage
 
 #####################################################################
-# Alarme
+# Alarm Control and Intrusion Automation
 #####################################################################
 
 alarm_control_panel:
@@ -945,7 +909,7 @@ automation sirene_alarme_off:
         entity_id: switch.zigbee_prise_sirene_switch
 
 #####################################################################
-# Lumière placards chambre parentale
+# Primary Bedroom Closet Lighting Automation
 #####################################################################
 
 automation lumiere_placard_guilhem:
@@ -983,7 +947,7 @@ automation lumiere_placard_julie:
   mode: restart
 
 #####################################################################
-# Pompe à eau - Temporisation
+# Water Pump Timeout Automation
 #####################################################################
 
 automation coupure_pompe_auto:
@@ -999,54 +963,8 @@ automation coupure_pompe_auto:
       target:
         entity_id: switch.zwave_switch_pompe_on_off
 
-#automation poubelle_verte:
-#  alias: 'Notification + message TTS poubelle verte'
-#  trigger:
-#  - platform: time
-#    at: '19:30'
-#  - platform: time
-#    at: '20:00'
-#  - platform: time
-#    at: '20:30'
-#  condition:
-#  - condition: state
-#    entity_id: sensor.poubelle_verte
-#    state: "tomorrow"
-#  action:
-#  - service: notify.notify
-#    data:
-#      message: "Poubelle VERTE."
-#  - service: tts.cloud_say
-#    data:
-#      entity_id: all
-#      message: "Il faut sortir la poubelle verte."
-#      language: "fr-FR"
-
-#automation poubelle_jaune:
-#  alias: 'Notification + message TTS poubelle jaune'
-#  trigger:
-#  - platform: time
-#    at: '19:30'
-#  - platform: time
-#    at: '20:00'
-#  - platform: time
-#    at: '20:30'
-#  condition:
-#  - condition: state
-#    entity_id: sensor.poubelle_jaune
-#    state: "tomorrow"
-#  action:
-#  - service: notify.notify
-#    data:
-#      message: "Poubelle JAUNE."
-#  - service: tts.cloud_say
-#    data:
-#      entity_id: all
-#      message: "Il faut sortir la poubelle jaune."
-#      language: "fr-FR"
-
 #####################################################################
-# Gestions des poubelles
+# Garbage Collection Reminder Automation
 #####################################################################
 
 automation poubelle_jaune:
@@ -1096,7 +1014,7 @@ automation poubelle_verte:
       language: "fr-FR"
 
 #####################################################################
-# Nombre de portes / fenêtres ouvertes
+# Template Sensors, Switches, and Covers
 #####################################################################
 
 template:
@@ -1172,7 +1090,7 @@ template:
         days: >-
             {{ ((state_attr('calendar.yellow_garbage', 'start_time') | as_timestamp - today_at('00:00') | as_timestamp) / 86400) | int }}
 
-    # Migrés depuis l'ancien bloc de capteurs template legacy
+    # Template sensors migrated from the legacy template sensor block.
     - default_entity_id: sensor.consigne_salon
       name: consigne_salon
       state: "{{ state_attr('climate.thermostat_salon', 'temperature') }}"
@@ -1208,7 +1126,7 @@ template:
       unit_of_measurement: "W"
 
   - switch:
-    # Migrés depuis l'ancien bloc d'interrupteurs template legacy
+    # Template switches migrated from the legacy template switch block.
     - default_entity_id: switch.switch_radiateur_salle_de_bain
       name: switch_radiateur_salle_de_bain
       turn_on:
@@ -1329,7 +1247,7 @@ template:
             preset_mode: away
 
   - cover:
-    # Migré depuis l'ancien bloc de volet/porte template legacy
+    # Template cover migrated from the legacy template cover block.
     - default_entity_id: cover.garage_door
       name: "Porte garage"
       device_class: garage
@@ -1345,6 +1263,7 @@ template:
         entity_id: switch.zwave_relais_porte_garage_on_off
 
 
+# Time and date sensors used by templates and dashboards.
 sensor:
   - platform: time_date
     display_options:
@@ -1356,6 +1275,7 @@ sensor:
     - time_date
     - time_utc
 
+# Utility scripts for dashboard temperature controls.
 script:
   temperature_up:
     sequence:
@@ -1369,11 +1289,3 @@ script:
       data_template:
         entity_id: "{{ climate_id }}"
         temperature: "{{ state_attr(climate_id, 'temperature') | float - value  }}"
-#  
-#fan:
-#- platform: xiaomi_miio_fan
-#  name: Xiaomi Smart Fan
-#  host: 192.168.1.138
-#  token: !secret xiaomi_fan_token
-#  model: dmaker.fan.p18
-  
