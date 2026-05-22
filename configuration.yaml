@@ -1014,6 +1014,87 @@ automation poubelle_verte:
       language: "fr-FR"
 
 #####################################################################
+# Sensor Heartbeat Monitoring
+#####################################################################
+
+automation sensor_heartbeat_monitor:
+  - alias: "Alerte capteurs sans signe de vie"
+    trigger:
+      - platform: time
+        at: "09:00:00"
+    variables:
+      stale_after_hours: 48
+      monitored_entities:
+        # Temperature sensors used by thermostats
+        - sensor.zigbee_capteur_temperature_salle_de_bain_temperature
+        - sensor.zigbee_capteur_temperature_bureau_temperature
+        - sensor.zigbee_capteur_temperature_salle_de_jeux_temperature
+        - sensor.zigbee_capteur_temperature_salon_temperature
+        - sensor.zigbee_capteur_temperature_chambre_leandre_temperature
+        - sensor.zigbee_capteur_temperature_chambre_lois_temperature
+        - sensor.zigbee_capteur_temperature_chambre_parentale_temperature
+
+        # Door and window opening sensors
+        - binary_sensor.zigbee_capteur_ouverture_porte_fenetre_salon_on_off
+        - binary_sensor.zigbee_capteur_ouverture_porte_entree_on_off
+        - binary_sensor.zigbee_capteur_ouverture_baie_vitree_salle_a_manger_on_off
+        - binary_sensor.zigbee_capteur_ouverture_fenetre_salle_a_manger_on_off
+        - binary_sensor.zigbee_capteur_ouverture_fenetre_cuisine_on_off
+        - binary_sensor.zigbee_capteur_ouverture_fenetre_salle_de_bain_on_off
+        - binary_sensor.zigbee_capteur_ouverture_fenetre_bureau_on_off
+        - binary_sensor.zigbee_capteur_ouverture_fenetre_salle_de_jeux_on_off
+        - binary_sensor.zigbee_capteur_ouverture_fenetre_sud_chambre_leandre_on_off
+        - binary_sensor.zigbee_capteur_ouverture_fenetre_nord_chambre_leandre_on_off
+        - binary_sensor.zigbee_capteur_ouverture_fenetre_chambre_parentale_on_off
+        - binary_sensor.zigbee_capteur_ouverture_fenetre_chambre_lois_on_off
+
+        # Garage door opening sensor
+        - binary_sensor.zigbee_capteur_ouverture_porte_garage_on_off
+
+        # Motion sensors
+        - binary_sensor.zigbee_capteur_mouvements_garage_mouvement
+        - binary_sensor.zigbee_capteur_mouvements_cuisine_mouvement
+        - binary_sensor.zigbee_capteur_mouvements_salon_mouvement
+        - binary_sensor.zigbee_capteur_mouvements_placard_guilhem_mouvement
+        - binary_sensor.zigbee_capteur_mouvements_placard_julie_mouvement
+
+        # Smoke and carbon monoxide sensors are not referenced in this file.
+        # Add their exact Home Assistant entity IDs here when available.
+        # - binary_sensor.xxx_smoke
+        # - binary_sensor.xxx_carbon_monoxide
+
+      stale_entities: >-
+        {% set ns = namespace(items=[]) %}
+        {% for entity in expand(monitored_entities) %}
+          {% set last_seen = entity.last_reported %}
+          {% set age_hours = ((now() - last_seen).total_seconds() / 3600) | round(1) %}
+          {% if entity.state in ['unavailable', 'unknown'] or age_hours >= stale_after_hours %}
+            {% set status = entity.state if entity.state in ['unavailable', 'unknown'] else age_hours ~ ' h' %}
+            {% set ns.items = ns.items + [entity.name ~ ': ' ~ status] %}
+          {% endif %}
+        {% endfor %}
+        {{ ns.items | join('\n') }}
+      missing_entities: >-
+        {% set existing_entities = expand(monitored_entities) | map(attribute='entity_id') | list %}
+        {{ monitored_entities | reject('in', existing_entities) | list | join('\n') }}
+    condition:
+      - condition: template
+        value_template: "{{ stale_entities | trim | length > 0 or missing_entities | trim | length > 0 }}"
+    action:
+      - service: notify.notify
+        data:
+          title: "Capteurs sans signe de vie"
+          message: >-
+            {% if stale_entities | trim | length > 0 %}
+            {{ stale_entities }}
+            {% endif %}
+            {% if missing_entities | trim | length > 0 %}
+
+            Entites introuvables dans Home Assistant:
+            {{ missing_entities }}
+            {% endif %}
+
+#####################################################################
 # Template Sensors, Switches, and Covers
 #####################################################################
 
