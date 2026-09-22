@@ -1,0 +1,165 @@
+- id: '1630263330794'
+  alias: Lumière garage toggle
+  description: Inversion d'état des lumières du garage + escalier
+  trigger:
+  - device_id: cfb62b5353c85dd936486387c1bd362d
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: remote_button_short_press
+  - device_id: 793501c10ede5d6a4a8627f98bab10bb
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: remote_button_short_press
+  condition: []
+  action:
+  - service: switch.toggle
+    metadata: {}
+    data: {}
+    target:
+      device_id: 5ad23befb830801365a0b209495f92f0
+  mode: single
+- id: '1630526377742'
+  alias: Lumière terrasse toggle
+  description: Inversion de l'état de la lumière de la terrasse
+  trigger:
+  - device_id: 8a340f51719ba8110ff89d4aeb3bb882
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: remote_button_short_press
+  condition: []
+  action:
+  - type: toggle
+    device_id: 4c1153312f5adfa1e30103af7c9c659c
+    entity_id: switch.zwave_relais_lumieres_terrasse_on_off
+    domain: switch
+  mode: single
+- id: '1630572025815'
+  alias: Lumière entrée toggle
+  description: Inversion d'état de la lumière de l'entrée
+  trigger:
+  - device_id: 3bbe825c317d2170755623aa5756f057
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: remote_button_short_press
+  condition: []
+  action:
+  - type: toggle
+    device_id: 6ce84733ab6992f58156a923b4b97fe7
+    entity_id: light.zigbee_ampoule_entree_on_off
+    domain: light
+  mode: single
+- id: '1633550736460'
+  alias: IKEA lumières salon ON
+  description: ''
+  trigger:
+  - device_id: d3ae6bd264c265cff2eae0aa5f323550
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: turn_on
+  condition: []
+  action:
+  - type: turn_on
+    device_id: a399d5816a74c83db026173ff2eb7387
+    entity_id: switch.zigbee_prise_lumiere_salon_on_off
+    domain: switch
+  mode: single
+- id: '1633550787104'
+  alias: IKEA lumières salon OFF
+  description: ''
+  trigger:
+  - device_id: d3ae6bd264c265cff2eae0aa5f323550
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: turn_off
+  condition: []
+  action:
+  - type: turn_off
+    device_id: a399d5816a74c83db026173ff2eb7387
+    entity_id: switch.zigbee_prise_lumiere_salon_on_off
+    domain: switch
+  mode: single
+- id: '1636406696955'
+  alias: Notification sur détection de fumée SALON
+  description: ''
+  trigger:
+  - type: smoke
+    platform: device
+    device_id: 38059e97d3e4efb2fa7f5a3851453855
+    entity_id: binary_sensor.zwave_capteur_fumee_salon_alarme_fumee
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      title: Présence fumée SALON
+      message: Attention, présence de fumée détectée dans le salon.
+  mode: single
+- id: '1636406933681'
+  alias: Notification sur détection de monoxyde SALON
+  description: ''
+  trigger:
+  - type: gas
+    platform: device
+    device_id: 6e70a6b0f639dd15fa67ae729b75deb5
+    entity_id: binary_sensor.zwave_capteur_monoxyde_alarm
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      title: Présence monoxyde SALON
+      message: Attention, présence de monoxyde détectée dans le salon.
+  mode: single
+- id: '1736965968392'
+  alias: Allumage terrasse et salon
+  description: 'Lights on salon et terrasse '
+  trigger:
+  - platform: tag
+    tag_id: dd885be1-4632-429f-8090-61e4938bede7
+  - platform: tag
+    tag_id: bfc3d0ce-f6ad-4398-9abc-1a5a896caa61
+  condition: []
+  action:
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.lumieres_salon
+    data: {}
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.terrasse
+    data: {}
+  mode: single
+- id: '1736966080698'
+  alias: New automation
+  description: ''
+  trigger: []
+  condition: []
+  action: []
+  mode: single
+- id: '1737116672110'
+  alias: Extinction terrasse et salon
+  description: 'Lights off salon et terrasse '
+  trigger:
+  - platform: tag
+    tag_id: 271b1819-233d-4273-bed9-46198f054a32
+  condition: []
+  action:
+  - action: light.turn_off
+    target:
+      entity_id:
+      - light.lumieres_salon
+    data: {}
+  - action: light.turn_off
+    target:
+      entity_id:
+      - light.terrasse
+    data: {}
+  mode: single

@@ -92,52 +92,38 @@ climate:
     target_sensor: sensor.zigbee_capteur_temperature_chambre_parentale_temperature
 
 #####################################################################
-# Kitchen Water Heater Automation
+# 3D Printer Enclosure Fire Safety Cutoff
 #####################################################################
 
-automation chauffe_eau_cuisine:
-  - alias: Allumage du chauffe-eau le matin
-    trigger:
-    - platform: time
-      at: '06:30'
-    action:
-    - service: switch.turn_on
-      entity_id: switch.zwave_prise_chauffe_eau
-  - alias: Extinction du chauffe-eau le matin
-    trigger:
-    - platform: time
-      at: '08:30'
-    action:
+# Coupe l'alimentation des imprimantes 3D sur detection de fumee.
+# Pas de remise sous tension automatique : le rearmement est manuel.
+# Les deux entity_id ci-dessous doivent correspondre exactement au registre HA
+# (renommer un appareil ne renomme PAS ses entity_id : les editer une par une).
+automation securite_imprimantes_3d:
+  alias: 'Coupure imprimantes 3D sur détection de fumée'
+  trigger:
+    # 'from: off' est indispensable : sans lui, le declencheur repond aussi aux
+    # transitions unavailable/unknown -> on qui surviennent au demarrage de HA,
+    # et coupe les imprimantes sans aucune fumee.
+    - platform: state
+      entity_id: binary_sensor.zwave_capteur_fumee_imprimantes_3d_alarme_fumee
+      from: 'off'
+      to: 'on'
+  action:
     - service: switch.turn_off
-      entity_id: switch.zwave_prise_chauffe_eau
-  - alias: Allumage du chauffe-eau le midi
-    trigger:
-    - platform: time
-      at: '11:30'
-    action:
-    - service: switch.turn_on
-      entity_id: switch.zwave_prise_chauffe_eau
-  - alias: Extinction du chauffe-eau le midi
-    trigger:
-    - platform: time
-      at: '13:30'
-    action:
+      target:
+        entity_id: switch.zwave_prise_imprimantes_3d
+    - service: notify.notify
+      data:
+        title: "ALERTE FUMÉE - Imprimantes 3D"
+        message: "Fumée détectée dans l'enceinte d'impression. Alimentation coupée."
+    # Second envoi : une commande Z-Wave peut se perdre, la coupure doit aboutir.
+    - delay:
+        seconds: 10
     - service: switch.turn_off
-      entity_id: switch.zwave_prise_chauffe_eau
-  - alias: Allumage du chauffe-eau le soir
-    trigger:
-    - platform: time
-      at: '18:00'
-    action:
-    - service: switch.turn_on
-      entity_id: switch.zwave_prise_chauffe_eau
-  - alias: Extinction du chauffe-eau le soir
-    trigger:
-    - platform: time
-      at: '21:00'
-    action:
-    - service: switch.turn_off
-      entity_id: switch.zwave_prise_chauffe_eau
+      target:
+        entity_id: switch.zwave_prise_imprimantes_3d
+  mode: single
 
 #####################################################################
 # Upstairs WC Water Heater Automation
@@ -958,10 +944,11 @@ automation coupure_pompe_auto:
       to: 'on'
   action:
     - delay:
-        minutes: 10
+        minutes: 15
     - service: switch.turn_off
       target:
         entity_id: switch.zwave_switch_pompe_on_off
+  mode: restart
 
 #####################################################################
 # Garbage Collection Reminder Automation
