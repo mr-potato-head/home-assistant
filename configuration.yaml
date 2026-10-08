@@ -1050,12 +1050,21 @@ automation sensor_heartbeat_monitor:
         # - binary_sensor.xxx_smoke
         # - binary_sensor.xxx_carbon_monoxide
 
+      # Capteurs dont l'anciennete n'a pas de sens : ces fenetres sont rarement
+      # ouvertes et l'entite n'est actualisee qu'au changement d'etat. Ils restent
+      # surveilles sur 'unavailable' : ZHA marque un appareil sur pile indisponible
+      # apres 6 h de silence (consider_unavailable_battery = 21600 s), donc une
+      # pile morte est toujours detectee.
+      no_age_check:
+        - binary_sensor.zigbee_capteur_ouverture_fenetre_bureau_on_off
+        - binary_sensor.zigbee_capteur_ouverture_fenetre_chambre_lois_on_off
+
       stale_entities: >-
         {% set ns = namespace(items=[]) %}
         {% for entity in expand(monitored_entities) %}
           {% set last_seen = entity.last_reported %}
           {% set age_hours = ((now() - last_seen).total_seconds() / 3600) | round(1) %}
-          {% if entity.state in ['unavailable', 'unknown'] or age_hours >= stale_after_hours %}
+          {% if entity.state in ['unavailable', 'unknown'] or (entity.entity_id not in no_age_check and age_hours >= stale_after_hours) %}
             {% set status = entity.state if entity.state in ['unavailable', 'unknown'] else age_hours ~ ' h' %}
             {% set ns.items = ns.items + [entity.name ~ ': ' ~ status] %}
           {% endif %}
@@ -1068,8 +1077,12 @@ automation sensor_heartbeat_monitor:
       - condition: template
         value_template: "{{ stale_entities | trim | length > 0 or missing_entities | trim | length > 0 }}"
     action:
-      - service: notify.notify
+      # Liste complete dans une notification persistante : pas de troncature,
+      # elle reste jusqu'a ce qu'on la ferme. Le notification_id fixe fait que
+      # celle du jour remplace la precedente au lieu de les empiler.
+      - service: persistent_notification.create
         data:
+          notification_id: capteurs_sans_signe_de_vie
           title: "Capteurs sans signe de vie"
           message: >-
             {% if stale_entities | trim | length > 0 %}
@@ -1080,6 +1093,14 @@ automation sensor_heartbeat_monitor:
             Entites introuvables dans Home Assistant:
             {{ missing_entities }}
             {% endif %}
+      # Push mobile : seulement le decompte, le detail est dans Home Assistant.
+      - service: notify.notify
+        data:
+          title: "Capteurs sans signe de vie"
+          message: >-
+            {{ stale_entities.strip().split('\n') | select | list | count }} sans signe de vie,
+            {{ missing_entities.strip().split('\n') | select | list | count }} introuvable(s).
+            Liste complete dans les notifications Home Assistant.
 
 #####################################################################
 # Template Sensors, Switches, and Covers
