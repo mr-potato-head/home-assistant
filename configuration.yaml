@@ -1010,7 +1010,12 @@ automation sensor_heartbeat_monitor:
       - platform: time
         at: "09:00:00"
     variables:
-      stale_after_hours: 48
+      # Contrôle d'anciennete applique aux seules sondes du domaine 'sensor' :
+      # elles emettent periodiquement, donc une absence prolongee de mesure est
+      # un vrai signal meme si l'entite reste 'available'. Les 'binary_sensor'
+      # sont evenementiels (ils ne publient qu'au changement) et en sont exclus.
+      # Seuil volontairement serre : les thermostats dependent de ces sondes.
+      stale_after_hours: 12
       monitored_entities:
         # Temperature sensors used by thermostats
         - sensor.zigbee_capteur_temperature_salle_de_bain_temperature
@@ -1050,23 +1055,23 @@ automation sensor_heartbeat_monitor:
         # - binary_sensor.xxx_smoke
         # - binary_sensor.xxx_carbon_monoxide
 
-      # Capteurs dont l'anciennete n'a pas de sens : ces fenetres sont rarement
-      # ouvertes et l'entite n'est actualisee qu'au changement d'etat. Ils restent
-      # surveilles sur 'unavailable' : ZHA marque un appareil sur pile indisponible
-      # apres 6 h de silence (consider_unavailable_battery = 21600 s), donc une
-      # pile morte est toujours detectee.
-      no_age_check:
-        - binary_sensor.zigbee_capteur_ouverture_fenetre_bureau_on_off
-        - binary_sensor.zigbee_capteur_ouverture_fenetre_chambre_lois_on_off
-
+      # Seul 'unavailable' / 'unknown' est un signal fiable de capteur mort.
+      # L'anciennete n'en est pas un : les capteurs d'ouverture ne publient leur
+      # etat qu'au changement, donc une fenetre jamais ouverte parait muette
+      # alors qu'elle va tres bien. Et c'est inutile : ZHA marque un appareil
+      # sur pile indisponible apres 6 h de silence (consider_unavailable_battery
+      # = 21600 s), Z-Wave JS fait de meme sur ses noeuds morts.
       stale_entities: >-
         {% set ns = namespace(items=[]) %}
         {% for entity in expand(monitored_entities) %}
-          {% set last_seen = entity.last_reported %}
-          {% set age_hours = ((now() - last_seen).total_seconds() / 3600) | round(1) %}
-          {% if entity.state in ['unavailable', 'unknown'] or (entity.entity_id not in no_age_check and age_hours >= stale_after_hours) %}
-            {% set status = entity.state if entity.state in ['unavailable', 'unknown'] else age_hours ~ ' h' %}
-            {% set ns.items = ns.items + [entity.name ~ ': ' ~ status] %}
+          {% if entity.state in ['unavailable', 'unknown'] %}
+            {% set age_hours = ((now() - entity.last_changed).total_seconds() / 3600) | round(1) %}
+            {% set ns.items = ns.items + [entity.name ~ ': ' ~ entity.state ~ ' depuis ' ~ age_hours ~ ' h'] %}
+          {% elif entity.entity_id.startswith('sensor.') %}
+            {% set age_hours = ((now() - entity.last_reported).total_seconds() / 3600) | round(1) %}
+            {% if age_hours >= stale_after_hours %}
+              {% set ns.items = ns.items + [entity.name ~ ': aucune mesure depuis ' ~ age_hours ~ ' h'] %}
+            {% endif %}
           {% endif %}
         {% endfor %}
         {{ ns.items | join('\n') }}
