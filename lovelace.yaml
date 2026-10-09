@@ -277,20 +277,21 @@ views:
           cards:
           - content: |
               # Salon
-            style:
-              .: |
-                ha-card {
-                  background-color: transparent !important;
-                  box-shadow: none !important;
-                }
-              ha-markdown:
-                $: |
-                  h1 {
-                    font-size: 28px;
-                  # font-weight: bold;
-                    text-align: center;
-                    letter-spacing: '-0.01em';
+            card_mod:
+              style:
+                .: |
+                  ha-card {
+                    background-color: transparent !important;
+                    box-shadow: none !important;
                   }
+                ha-markdown:
+                  $: |
+                    h1 {
+                      font-size: 28px;
+                    # font-weight: bold;
+                      text-align: center;
+                      letter-spacing: '-0.01em';
+                    }
             type: markdown
           - type: custom:button-card
             entity: sensor.zigbee_capteur_temperature_salon_temperature
@@ -474,20 +475,21 @@ views:
             cards:
             - content: |
                 # Salle de bain
-              style:
-                .: |
-                  ha-card {
-                    background-color: transparent !important;
-                    box-shadow: none !important;
-                  }
-                ha-markdown:
-                  $: |
-                    h1 {
-                      font-size: 22px;
-                    # font-weight: bold;
-                      text-align: center;
-                      letter-spacing: '-0.01em';
+              card_mod:
+                style:
+                  .: |
+                    ha-card {
+                      background-color: transparent !important;
+                      box-shadow: none !important;
                     }
+                  ha-markdown:
+                    $: |
+                      h1 {
+                        font-size: 22px;
+                      # font-weight: bold;
+                        text-align: center;
+                        letter-spacing: '-0.01em';
+                      }
               type: markdown
             - type: custom:button-card
               entity: sensor.zigbee_capteur_temperature_salle_de_bain_temperature
@@ -585,20 +587,21 @@ views:
             cards:
             - content: |
                 # Bureau
-              style:
-                .: |
-                  ha-card {
-                    background-color: transparent !important;
-                    box-shadow: none !important;
-                  }
-                ha-markdown:
-                  $: |
-                    h1 {
-                      font-size: 22px;
-                    # font-weight: bold;
-                      text-align: center;
-                      letter-spacing: '-0.01em';
+              card_mod:
+                style:
+                  .: |
+                    ha-card {
+                      background-color: transparent !important;
+                      box-shadow: none !important;
                     }
+                  ha-markdown:
+                    $: |
+                      h1 {
+                        font-size: 22px;
+                      # font-weight: bold;
+                        text-align: center;
+                        letter-spacing: '-0.01em';
+                      }
               type: markdown
             - type: custom:button-card
               entity: sensor.zigbee_capteur_temperature_bureau_temperature
@@ -700,20 +703,21 @@ views:
             cards:
             - content: |
                 # Salle de Jeux
-              style:
-                .: |
-                  ha-card {
-                    background-color: transparent !important;
-                    box-shadow: none !important;
-                  }
-                ha-markdown:
-                  $: |
-                    h1 {
-                      font-size: 22px;
-                    # font-weight: bold;
-                      text-align: center;
-                      letter-spacing: '-0.01em';
+              card_mod:
+                style:
+                  .: |
+                    ha-card {
+                      background-color: transparent !important;
+                      box-shadow: none !important;
                     }
+                  ha-markdown:
+                    $: |
+                      h1 {
+                        font-size: 22px;
+                      # font-weight: bold;
+                        text-align: center;
+                        letter-spacing: '-0.01em';
+                      }
               type: markdown
             - type: custom:button-card
               entity: sensor.zigbee_capteur_temperature_salle_de_jeux_temperature
@@ -815,20 +819,21 @@ views:
             cards:
             - content: |
                 # Parents
-              style:
-                .: |
-                  ha-card {
-                    background-color: transparent !important;
-                    box-shadow: none !important;
-                  }
-                ha-markdown:
-                  $: |
-                    h1 {
-                      font-size: 22px;
-                    # font-weight: bold;
-                      text-align: center;
-                      letter-spacing: '-0.01em';
+              card_mod:
+                style:
+                  .: |
+                    ha-card {
+                      background-color: transparent !important;
+                      box-shadow: none !important;
                     }
+                  ha-markdown:
+                    $: |
+                      h1 {
+                        font-size: 22px;
+                      # font-weight: bold;
+                        text-align: center;
+                        letter-spacing: '-0.01em';
+                      }
               type: markdown
             - type: custom:button-card
               entity: sensor.zigbee_capteur_temperature_chambre_parentale_temperature
@@ -930,20 +935,21 @@ views:
             cards:
             - content: |
                 # Léandre
-              style:
-                .: |
-                  ha-card {
-                    background-color: transparent !important;
-                    box-shadow: none !important;
-                  }
-                ha-markdown:
-                  $: |
-                    h1 {
-                      font-size: 22px;
-                    # font-weight: bold;
-                      text-align: center;
-                      letter-spacing: '-0.01em';
+              card_mod:
+                style:
+                  .: |
+                    ha-card {
+                      background-color: transparent !important;
+                      box-shadow: none !important;
                     }
+                  ha-markdown:
+                    $: |
+                      h1 {
+                        font-size: 22px;
+                      # font-weight: bold;
+                        text-align: center;
+                        letter-spacing: '-0.01em';
+                      }
               type: markdown
             - type: custom:button-card
               entity: sensor.zigbee_capteur_temperature_chambre_leandre_temperature
@@ -1045,20 +1051,21 @@ views:
             cards:
             - content: |
                 # Loïs
-              style:
-                .: |
-                  ha-card {
-                    background-color: transparent !important;
-                    box-shadow: none !important;
-                  }
-                ha-markdown:
-                  $: |
-                    h1 {
-                      font-size: 22px;
-                    # font-weight: bold;
-                      text-align: center;
-                      letter-spacing: '-0.01em';
+              card_mod:
+                style:
+                  .: |
+                    ha-card {
+                      background-color: transparent !important;
+                      box-shadow: none !important;
                     }
+                  ha-markdown:
+                    $: |
+                      h1 {
+                        font-size: 22px;
+                      # font-weight: bold;
+                        text-align: center;
+                        letter-spacing: '-0.01em';
+                      }
               type: markdown
             - type: custom:button-card
               entity: sensor.zigbee_capteur_temperature_chambre_lois_temperature
