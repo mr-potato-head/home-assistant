@@ -631,8 +631,23 @@ automation chauffage_salle_de_bain:
         temperature: 14
 
 #####################################################################
-# Home Mode Automation
+# Home Mode Helper and Automation
 #####################################################################
+
+# Migre le 2026-10-09 depuis une aide creee dans l'IHM : cette liste commande
+# toute la logique de chauffage (23 references dans ce fichier), elle n'avait
+# rien a faire dans .storage, hors du depot.
+# ATTENTION : en YAML c'est la CLE qui determine l'entity_id. Elle doit rester
+# exactement 'input_select_mode_maison', sinon toutes les references cassent.
+input_select:
+  input_select_mode_maison:
+    name: input_select_mode_maison
+    icon: mdi:tune-variant
+    options:
+      - Vacances
+      - Télétravail
+      - Travail
+      - Weekend
 
 automation mode_maison:
   - alias: Choix du mode maison en fonction du jour de la semaine
@@ -1050,10 +1065,13 @@ automation sensor_heartbeat_monitor:
         - binary_sensor.zigbee_capteur_mouvements_placard_guilhem_mouvement
         - binary_sensor.zigbee_capteur_mouvements_placard_julie_mouvement
 
-        # Smoke and carbon monoxide sensors are not referenced in this file.
-        # Add their exact Home Assistant entity IDs here when available.
-        # - binary_sensor.xxx_smoke
-        # - binary_sensor.xxx_carbon_monoxide
+        # Detecteurs de fumee. Comme tous les binary_sensor ils ne sont surveilles
+        # que sur 'unavailable' / 'unknown', ce qui est exactement ce qu'on veut
+        # d'un organe de securite : savoir s'il a cesse de repondre.
+        # Le detecteur de monoxyde du salon a ete retire du reseau Z-Wave le
+        # 2026-10-09, materiel hors service, et n'est donc plus surveille ici.
+        - binary_sensor.zwave_capteur_fumee_salon_alarme_fumee
+        - binary_sensor.zwave_capteur_fumee_imprimantes_3d_alarme_fumee
 
       # Seul 'unavailable' / 'unknown' est un signal fiable de capteur mort.
       # L'anciennete n'en est pas un : les capteurs d'ouverture ne publient leur

@@ -12,8 +12,8 @@ views:
           - align_icon: left
             align_state: center
             entities:
-              - sensor.zigbee_capteur_temperature_exterieure_temperature
-            font_size: 120
+              - sensor.zwave_capteur_temperature_exterieur_temperature
+            font_size: 100
             icon: 'mdi:sun-thermometer-outline'
             name: Température
             show:
@@ -36,8 +36,8 @@ views:
           - align_icon: left
             align_state: center
             entities:
-              - sensor.zigbee_capteur_temperature_exterieure_humidite
-            font_size: 120
+              - sensor.zwave_capteur_temperature_exterieur_humidite
+            font_size: 100
             icon: 'mdi:water-percent'
             name: Humidité
             show:
@@ -58,7 +58,7 @@ views:
             type: 'custom:mini-graph-card'
         #- type: weather-forecast
         #  entity: weather.openweathermap
-            
+
         - type: vertical-stack
           cards:
             - type: custom:button-card
@@ -94,7 +94,7 @@ views:
                             else return '';
                           ]]]
                     card:
-                      - height: 90px
+                      - height: 75px
                   #aspect_ratio: 1/1
                 - type: custom:button-card
                   entity: input_select.input_select_mode_maison
@@ -118,7 +118,7 @@ views:
                             else return '';
                           ]]]
                     card:
-                      - height: 90px
+                      - height: 75px
                   #aspect_ratio: 1/1
                 - type: custom:button-card
                   entity: input_select.input_select_mode_maison
@@ -142,7 +142,7 @@ views:
                             else return '';
                           ]]]
                     card:
-                      - height: 90px
+                      - height: 75px
                   #aspect_ratio: 1/1
                 - type: custom:button-card
                   entity: input_select.input_select_mode_maison
@@ -166,14 +166,14 @@ views:
                             else return '';
                           ]]]
                     card:
-                      - height: 90px
+                      - height: 75px
                   #aspect_ratio: 1/1
-            
+
         - align_icon: left
           align_state: center
           entities:
             - sensor.zwave_capteur_energie_electrique_puissance_w
-          font_size: 120
+          font_size: 100
           icon: 'mdi:home-lightning-bolt-outline'
           name: Puissance instantanée
           show:
@@ -190,9 +190,45 @@ views:
           type: 'custom:mini-graph-card'
 
       - type: horizontal-stack
-        cards: 
-        - type: weather-forecast
-          entity: weather.openweathermap
+        cards:
+        - type: horizontal-stack
+          cards:
+            - type: custom:button-card
+              entity: switch.zwave_prise_imprimantes_3d
+              name: Imprimantes 3D
+              icon: mdi:printer-3d
+              tap_action:
+                action: none
+              size: 40%
+              styles:
+                icon:
+                  - color: |
+                      [[[
+                        if (entity.state === 'on') return 'lightgreen';
+                        else return 'grey';
+                      ]]]
+                card:
+                  - height: 110px
+            - type: custom:button-card
+              entity: binary_sensor.zwave_capteur_fumee_imprimantes_3d_alarme_fumee
+              name: Fumée
+              tap_action:
+                action: none
+              icon: |
+                [[[
+                  if (entity.state === 'on') return 'mdi:smoke';
+                  else return 'mdi:smoke-detector-variant';
+                ]]]
+              size: 40%
+              styles:
+                icon:
+                  - color: |
+                      [[[
+                        if (entity.state === 'on') return 'red';
+                        else return 'lightgreen';
+                      ]]]
+                card:
+                  - height: 110px
 
         - type: vertical-stack
           cards:
@@ -371,22 +407,13 @@ views:
             - type: custom:button-card
               tap_action:
                 action: toggle
-              entity: light.escalier
-              name: Escalier
-              size: 60%
-              styles:
-                card:
-                  - height: 110px
-            - type: custom:button-card
-              tap_action:
-                action: toggle
-              entity: light.garage
+              entity: light.garage_2
               name: Garage
               size: 60%
               styles:
                 card:
                   - height: 110px
-            
+
       - type: horizontal-stack
         cards:
           - type: vertical-stack
@@ -402,7 +429,7 @@ views:
                 ha-markdown:
                   $: |
                     h1 {
-                      font-size: 25px;
+                      font-size: 22px;
                     # font-weight: bold;
                       text-align: center;
                       letter-spacing: '-0.01em';
@@ -511,7 +538,7 @@ views:
                 ha-markdown:
                   $: |
                     h1 {
-                      font-size: 25px;
+                      font-size: 22px;
                     # font-weight: bold;
                       text-align: center;
                       letter-spacing: '-0.01em';
@@ -624,7 +651,7 @@ views:
                 ha-markdown:
                   $: |
                     h1 {
-                      font-size: 25px;
+                      font-size: 22px;
                     # font-weight: bold;
                       text-align: center;
                       letter-spacing: '-0.01em';
@@ -738,7 +765,7 @@ views:
                 ha-markdown:
                   $: |
                     h1 {
-                      font-size: 25px;
+                      font-size: 22px;
                     # font-weight: bold;
                       text-align: center;
                       letter-spacing: '-0.01em';
@@ -852,7 +879,7 @@ views:
                 ha-markdown:
                   $: |
                     h1 {
-                      font-size: 25px;
+                      font-size: 22px;
                     # font-weight: bold;
                       text-align: center;
                       letter-spacing: '-0.01em';
@@ -966,7 +993,7 @@ views:
                 ha-markdown:
                   $: |
                     h1 {
-                      font-size: 25px;
+                      font-size: 22px;
                     # font-weight: bold;
                       text-align: center;
                       letter-spacing: '-0.01em';

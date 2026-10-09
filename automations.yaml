@@ -100,22 +100,6 @@
       title: Présence fumée SALON
       message: Attention, présence de fumée détectée dans le salon.
   mode: single
-- id: '1636406933681'
-  alias: Notification sur détection de monoxyde SALON
-  description: ''
-  trigger:
-  - type: gas
-    platform: device
-    device_id: 6e70a6b0f639dd15fa67ae729b75deb5
-    entity_id: binary_sensor.zwave_capteur_monoxyde_alarm
-    domain: binary_sensor
-  condition: []
-  action:
-  - service: notify.notify
-    data:
-      title: Présence monoxyde SALON
-      message: Attention, présence de monoxyde détectée dans le salon.
-  mode: single
 - id: '1736965968392'
   alias: Allumage terrasse et salon
   description: 'Lights on salon et terrasse '
@@ -136,13 +120,6 @@
       entity_id:
       - light.terrasse
     data: {}
-  mode: single
-- id: '1736966080698'
-  alias: New automation
-  description: ''
-  trigger: []
-  condition: []
-  action: []
   mode: single
 - id: '1737116672110'
   alias: Extinction terrasse et salon
