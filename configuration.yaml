@@ -1235,13 +1235,13 @@ template:
     - default_entity_id: sensor.power_consumed_from_grid
       name: "Power Consumed from Grid"
       state: >
-        {{ max(states.sensor.zwave_capteur_energie_electrique_puissance_w.state | int, 0) | default(0)}}
+        {{ max(states.sensor.zwave_capteur_energie_electrique_puissance_w.state | int(0), 0) }}
       device_class: power
       unit_of_measurement: "W"
     - default_entity_id: sensor.power_return_to_grid
       name: "Power Returning to Grid"
       state: >
-        {{ min(states.sensor.zwave_capteur_energie_electrique_puissance_w.state | int, 0) | abs | default(0)}}
+        {{ min(states.sensor.zwave_capteur_energie_electrique_puissance_w.state | int(0), 0) | abs }}
       device_class: power
       unit_of_measurement: "W"
 
