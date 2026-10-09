@@ -24,6 +24,14 @@ lovelace:
       icon: mdi:script
       show_in_sidebar: true
       filename: lovelace.yaml
+    # Refonte en vue 'sections' : responsive, sans card-mod, cartes natives.
+    # Coexiste avec l'ancien tableau de bord le temps de la comparaison.
+    lovelace-v2:
+      mode: yaml
+      title: Maison
+      icon: mdi:home-heart
+      show_in_sidebar: true
+      filename: lovelace-v2.yaml
 
 # Frontend theme configuration.
 frontend:

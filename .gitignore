@@ -6,5 +6,6 @@
 !configuration.yaml
 !automations.yaml
 !lovelace.yaml
+!lovelace-v2.yaml
 !screenshots/
 !screenshots/*
