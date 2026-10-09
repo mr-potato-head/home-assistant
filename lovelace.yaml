@@ -407,7 +407,16 @@ views:
             - type: custom:button-card
               tap_action:
                 action: toggle
-              entity: light.garage_2
+              entity: light.nord
+              name: Nord
+              size: 60%
+              styles:
+                card:
+                  - height: 110px
+            - type: custom:button-card
+              tap_action:
+                action: toggle
+              entity: light.garage
               name: Garage
               size: 60%
               styles:
