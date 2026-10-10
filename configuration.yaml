@@ -811,6 +811,20 @@ automation delestage_start:
     entity_id: climate.thermostat_chambre_parentale
   - service: climate.turn_off
     entity_id: climate.thermostat_bureau
+  # Le chauffe-eau du WC est la charge la plus interessante a delester :
+  # ~2 kW, et dix minutes d'interruption ne se voient pas. Mais contrairement
+  # aux thermostats il suit un programme horaire (voir automation
+  # chauffe_eau_wc), donc on memorise son etat avant de couper plutot que de
+  # le rallumer aveuglement en fin de delestage — ce qui le ferait chauffer
+  # hors de ses creneaux.
+  - service: scene.create
+    data:
+      scene_id: delestage_chauffe_eau_wc
+      snapshot_entities:
+        - switch.zigbee_prise_chauffe_eau_wc_switch
+  - service: switch.turn_off
+    target:
+      entity_id: switch.zigbee_prise_chauffe_eau_wc_switch
 
 automation delestage_test_inferieur:
 - alias: Délestage inf.
@@ -836,6 +850,13 @@ automation delestage_test_inferieur:
     entity_id: climate.thermostat_chambre_parentale
   - service: climate.turn_on
     entity_id: climate.thermostat_bureau
+  # Volontairement en dernier : une scene creee par scene.create ne survit pas
+  # a un redemarrage de Home Assistant. Si HA redemarre pendant un delestage,
+  # cette action echoue — placee ici, elle n'empeche pas la reactivation des
+  # thermostats, et le chauffe-eau repartira de lui-meme a son prochain creneau.
+  - service: scene.turn_on
+    target:
+      entity_id: scene.delestage_chauffe_eau_wc
 
 automation delestage_test_superieur:
 - alias: Délestage sup.
