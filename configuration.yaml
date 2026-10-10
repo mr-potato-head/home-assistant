@@ -172,7 +172,7 @@ automation chauffe_eau_wc:
 #####################################################################
 
 automation chauffage_leandre:
-  - alias: Arrêt du thermostat sur ouverture des fenêtres
+  - alias: Léandre - Arrêt du thermostat sur ouverture des fenêtres
     trigger:
       - entity_id: binary_sensor.zigbee_capteur_ouverture_fenetre_nord_chambre_leandre_on_off
         platform: state
@@ -187,7 +187,7 @@ automation chauffage_leandre:
     action:
       - service: climate.turn_off
         entity_id: climate.thermostat_chambre_leandre
-  - alias: Relance du thermostat sur ouverture de la fenêtre
+  - alias: Léandre - Relance du thermostat sur ouverture de la fenêtre
     trigger:
       - entity_id: binary_sensor.zigbee_capteur_ouverture_fenetre_nord_chambre_leandre_on_off
         platform: state
@@ -202,7 +202,7 @@ automation chauffage_leandre:
     action:
       - service: climate.turn_on
         entity_id: climate.thermostat_chambre_leandre
-  - alias: Passage en consigne CONFORT le matin
+  - alias: Léandre - Passage en consigne CONFORT le matin
     trigger:
     - platform: time
       at: '06:30'
@@ -214,7 +214,7 @@ automation chauffage_leandre:
       data:
         entity_id: climate.thermostat_chambre_leandre
         temperature: 17.5
-  - alias: Passage en consigne ECO pour la journée
+  - alias: Léandre - Passage en consigne ECO pour la journée
     trigger:
     - platform: time
       at: '07:20'
@@ -226,7 +226,7 @@ automation chauffage_leandre:
       data:
         entity_id: climate.thermostat_chambre_leandre
         temperature: 14
-  - alias: Passage en consigne CONFORT le soir
+  - alias: Léandre - Passage en consigne CONFORT le soir
     trigger:
     - platform: time
       at: '20:00'
@@ -238,7 +238,7 @@ automation chauffage_leandre:
       data:
         entity_id: climate.thermostat_chambre_leandre
         temperature: 18
-  - alias: Passage en consigne ECO pour la nuit
+  - alias: Léandre - Passage en consigne ECO pour la nuit
     trigger:
     - platform: time
       at: '21:00'
@@ -252,11 +252,90 @@ automation chauffage_leandre:
         temperature: 17
 
 #####################################################################
+# Lois Bedroom Heating Automation
+#####################################################################
+
+# Ajoute le 2026-10-10 : cette chambre etait la seule des sept sans aucune
+# automation de chauffage. Son thermostat fonctionnait mais sa consigne
+# n'etait jamais modifiee, donc figee a 14 degres. Elle figurait pourtant
+# deja dans le groupe de delestage, coupee a 9 kW puis relancee.
+# Horaires et temperatures alignes sur la chambre de Leandre.
+automation chauffage_chambre_lois:
+  - alias: Loïs - Arrêt du thermostat sur ouverture de la fenêtre
+    trigger:
+      - entity_id: binary_sensor.zigbee_capteur_ouverture_fenetre_chambre_lois_on_off
+        platform: state
+        to: 'on'
+        for:
+          minutes: 1
+    action:
+      - service: climate.turn_off
+        entity_id: climate.thermostat_chambre_lois
+  - alias: Loïs - Relance du thermostat sur ouverture de la fenêtre
+    trigger:
+      - entity_id: binary_sensor.zigbee_capteur_ouverture_fenetre_chambre_lois_on_off
+        platform: state
+        to: 'off'
+        for:
+          minutes: 1
+    action:
+      - service: climate.turn_on
+        entity_id: climate.thermostat_chambre_lois
+  - alias: Loïs - Passage en consigne CONFORT le matin
+    trigger:
+    - platform: time
+      at: '06:30'
+    condition:
+      condition: template
+      value_template: "{{ not is_state('input_select.input_select_mode_maison', 'Vacances') }}"
+    action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.thermostat_chambre_lois
+        temperature: 17.5
+  - alias: Loïs - Passage en consigne ECO pour la journée
+    trigger:
+    - platform: time
+      at: '07:20'
+    condition:
+      condition: template
+      value_template: "{{ not is_state('input_select.input_select_mode_maison', 'Vacances') }}"
+    action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.thermostat_chambre_lois
+        temperature: 14
+  - alias: Loïs - Passage en consigne CONFORT le soir
+    trigger:
+    - platform: time
+      at: '20:00'
+    condition:
+      condition: template
+      value_template: "{{ not is_state('input_select.input_select_mode_maison', 'Vacances') }}"
+    action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.thermostat_chambre_lois
+        temperature: 18
+  - alias: Loïs - Passage en consigne ECO pour la nuit
+    trigger:
+    - platform: time
+      at: '21:00'
+    condition:
+      condition: template
+      value_template: "{{ not is_state('input_select.input_select_mode_maison', 'Vacances') }}"
+    action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.thermostat_chambre_lois
+        temperature: 17
+
+#####################################################################
 # Office Heating Automation
 #####################################################################
 
 automation chauffage_bureau:
-  - alias: Arrêt du thermostat sur ouverture de la fenêtre
+  - alias: Bureau - Arrêt du thermostat sur ouverture de la fenêtre
     trigger:
       - entity_id: binary_sensor.zigbee_capteur_ouverture_fenetre_bureau_on_off
         platform: state
@@ -266,7 +345,7 @@ automation chauffage_bureau:
     action:
       - service: climate.turn_off
         entity_id: climate.thermostat_bureau
-  - alias: Relance du thermostat sur ouverture de la fenêtre
+  - alias: Bureau - Relance du thermostat sur ouverture de la fenêtre
     trigger:
       - entity_id: binary_sensor.zigbee_capteur_ouverture_fenetre_bureau_on_off
         platform: state
@@ -276,7 +355,7 @@ automation chauffage_bureau:
     action:
       - service: climate.turn_on
         entity_id: climate.thermostat_bureau
-  - alias: Passage en consigne CONFORT le matin
+  - alias: Bureau - Passage en consigne CONFORT le matin
     trigger:
     - platform: time
       at: '08:00'
@@ -288,7 +367,7 @@ automation chauffage_bureau:
       data:
         entity_id: climate.thermostat_bureau
         temperature: 17
-  - alias: Passage en consigne ECO le soir
+  - alias: Bureau - Passage en consigne ECO le soir
     trigger:
     - platform: time
       at: '17:30'
@@ -306,7 +385,7 @@ automation chauffage_bureau:
 #####################################################################
 
 automation chauffage_chambre_parentale:
-  - alias: Arrêt du thermostat sur ouverture de la fenêtre
+  - alias: Parents - Arrêt du thermostat sur ouverture de la fenêtre
     trigger:
       - entity_id: binary_sensor.zigbee_capteur_ouverture_fenetre_chambre_parentale_on_off
         platform: state
@@ -316,7 +395,7 @@ automation chauffage_chambre_parentale:
     action:
       - service: climate.turn_off
         entity_id: climate.thermostat_chambre_parentale
-  - alias: Relance du thermostat sur ouverture de la fenêtre
+  - alias: Parents - Relance du thermostat sur ouverture de la fenêtre
     trigger:
       - entity_id: binary_sensor.zigbee_capteur_ouverture_fenetre_chambre_parentale_on_off
         platform: state
@@ -326,7 +405,7 @@ automation chauffage_chambre_parentale:
     action:
       - service: climate.turn_on
         entity_id: climate.thermostat_chambre_parentale
-  - alias: Passage en consigne CONFORT le matin
+  - alias: Parents - Passage en consigne CONFORT le matin
     trigger:
     - platform: time
       at: '06:30'
@@ -338,7 +417,7 @@ automation chauffage_chambre_parentale:
       data:
         entity_id: climate.thermostat_chambre_parentale
         temperature: 17
-  - alias: Passage en consigne ECO pour la journée
+  - alias: Parents - Passage en consigne ECO pour la journée
     trigger:
     - platform: time
       at: '07:15'
@@ -350,7 +429,7 @@ automation chauffage_chambre_parentale:
       data:
         entity_id: climate.thermostat_chambre_parentale
         temperature: 14
-  - alias: Passage en consigne CONFORT le soir
+  - alias: Parents - Passage en consigne CONFORT le soir
     trigger:
     - platform: time
       at: '21:30'
@@ -362,7 +441,7 @@ automation chauffage_chambre_parentale:
       data:
         entity_id: climate.thermostat_chambre_parentale
         temperature: 17
-  - alias: Passage en consigne ECO pour la nuit
+  - alias: Parents - Passage en consigne ECO pour la nuit
     trigger:
     - platform: time
       at: '22:30'
@@ -381,7 +460,7 @@ automation chauffage_chambre_parentale:
 #####################################################################
 
 automation chauffage_salle_de_jeux:
-  - alias: Arrêt du thermostat sur ouverture de la fenêtre
+  - alias: Salle de jeux - Arrêt du thermostat sur ouverture de la fenêtre
     trigger:
       - entity_id: binary_sensor.zigbee_capteur_ouverture_fenetre_salle_de_jeux_on_off
         platform: state
@@ -391,7 +470,7 @@ automation chauffage_salle_de_jeux:
     action:
       - service: climate.turn_off
         entity_id: climate.thermostat_salle_de_jeux
-  - alias: Relance du thermostat sur ouverture de la fenêtre
+  - alias: Salle de jeux - Relance du thermostat sur ouverture de la fenêtre
     trigger:
       - entity_id: binary_sensor.zigbee_capteur_ouverture_fenetre_salle_de_jeux_on_off
         platform: state
@@ -401,7 +480,7 @@ automation chauffage_salle_de_jeux:
     action:
       - service: climate.turn_on
         entity_id: climate.thermostat_salle_de_jeux
-  - alias: Passage en consigne CONFORT le matin
+  - alias: Salle de jeux - Passage en consigne CONFORT le matin
     trigger:
     - platform: time
       at: '06:45'
@@ -413,7 +492,7 @@ automation chauffage_salle_de_jeux:
       data:
         entity_id: climate.thermostat_salle_de_jeux
         temperature: 16
-  - alias: Passage en consigne ECO pour la journée
+  - alias: Salle de jeux - Passage en consigne ECO pour la journée
     trigger:
     - platform: time
       at: '08:30'
@@ -425,7 +504,7 @@ automation chauffage_salle_de_jeux:
       data:
         entity_id: climate.thermostat_salle_de_jeux
         temperature: 15
-  - alias: Passage en consigne CONFORT le soir
+  - alias: Salle de jeux - Passage en consigne CONFORT le soir
     trigger:
     - platform: time
       at: '18:00'
@@ -437,7 +516,7 @@ automation chauffage_salle_de_jeux:
       data:
         entity_id: climate.thermostat_salle_de_jeux
         temperature: 18
-  - alias: Passage en consigne ECO pour la nuit
+  - alias: Salle de jeux - Passage en consigne ECO pour la nuit
     trigger:
     - platform: time
       at: '19:30'
@@ -455,7 +534,7 @@ automation chauffage_salle_de_jeux:
 #####################################################################
 
 automation chauffage_salon:
-  - alias: Arrêt du thermostat sur ouverture des ouvrants (portes et fenêtres)
+  - alias: Salon - Arrêt du thermostat sur ouverture des ouvrants (portes et fenêtres)
     trigger:
       - entity_id: binary_sensor.zigbee_capteur_ouverture_porte_fenetre_salon_on_off
         platform: state
@@ -485,7 +564,7 @@ automation chauffage_salon:
     action:
       - service: climate.turn_off
         entity_id: climate.thermostat_salon
-  - alias: Relance du thermostat sur ouverture de la fenêtre
+  - alias: Salon - Relance du thermostat sur ouverture de la fenêtre
     trigger:
       - entity_id: binary_sensor.zigbee_capteur_ouverture_porte_fenetre_salon_on_off
         platform: state
@@ -515,7 +594,7 @@ automation chauffage_salon:
     action:
       - service: climate.turn_on
         entity_id: climate.thermostat_salon
-  - alias: Passage en consigne CONFORT le matin
+  - alias: Salon - Passage en consigne CONFORT le matin
     trigger:
     - platform: time
       at: '06:45'
@@ -527,7 +606,7 @@ automation chauffage_salon:
       data:
         entity_id: climate.thermostat_salon
         temperature: 17.5
-  - alias: Passage en consigne ECO pour la journée
+  - alias: Salon - Passage en consigne ECO pour la journée
     trigger:
     - platform: time
       at: '08:30'
@@ -539,7 +618,7 @@ automation chauffage_salon:
       data:
         entity_id: climate.thermostat_salon
         temperature: 14
-  - alias: Passage en consigne CONFORT le soir
+  - alias: Salon - Passage en consigne CONFORT le soir
     trigger:
     - platform: time
       at: '18:00'
@@ -551,7 +630,7 @@ automation chauffage_salon:
       data:
         entity_id: climate.thermostat_salon
         temperature: 17.5
-  - alias: Passage en consigne ECO pour la nuit
+  - alias: Salon - Passage en consigne ECO pour la nuit
     trigger:
     - platform: time
       at: '22:00'
@@ -569,7 +648,7 @@ automation chauffage_salon:
 #####################################################################
 
 automation chauffage_salle_de_bain:
-  - alias: Arrêt du thermostat sur ouverture de la fenêtre
+  - alias: Salle de bain - Arrêt du thermostat sur ouverture de la fenêtre
     trigger:
       - entity_id: binary_sensor.zigbee_capteur_ouverture_fenetre_salle_de_bain_on_off
         platform: state
@@ -579,7 +658,7 @@ automation chauffage_salle_de_bain:
     action:
       - service: climate.turn_off
         entity_id: climate.thermostat_salle_de_bain
-  - alias: Relance du thermostat sur ouverture de la fenêtre
+  - alias: Salle de bain - Relance du thermostat sur ouverture de la fenêtre
     trigger:
       - entity_id: binary_sensor.zigbee_capteur_ouverture_fenetre_salle_de_bain_on_off
         platform: state
@@ -589,7 +668,7 @@ automation chauffage_salle_de_bain:
     action:
       - service: climate.turn_on
         entity_id: climate.thermostat_salle_de_bain
-  - alias: Passage en consigne CONFORT le matin
+  - alias: Salle de bain - Passage en consigne CONFORT le matin
     trigger:
     - platform: time
       at: '06:55'
@@ -601,7 +680,7 @@ automation chauffage_salle_de_bain:
       data:
         entity_id: climate.thermostat_salle_de_bain
         temperature: 17
-  - alias: Passage en consigne ECO pour la journée
+  - alias: Salle de bain - Passage en consigne ECO pour la journée
     trigger:
     - platform: time
       at: '08:30'
@@ -613,7 +692,7 @@ automation chauffage_salle_de_bain:
       data:
         entity_id: climate.thermostat_salle_de_bain
         temperature: 14
-  - alias: Passage en consigne CONFORT le soir
+  - alias: Salle de bain - Passage en consigne CONFORT le soir
     trigger:
     - platform: time
       at: '18:30'
@@ -625,7 +704,7 @@ automation chauffage_salle_de_bain:
       data:
         entity_id: climate.thermostat_salle_de_bain
         temperature: 18
-  - alias: Passage en consigne ECO pour la nuit
+  - alias: Salle de bain - Passage en consigne ECO pour la nuit
     trigger:
     - platform: time
       at: '21:00'
