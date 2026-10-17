@@ -879,6 +879,42 @@ automation delestage_test_superieur:
       entity_id: timer.delestage
 
 #####################################################################
+# Solar Panel Plug Watchdog
+#####################################################################
+
+# La surveillance de 9h ne detecte qu'une prise INJOIGNABLE, pas une prise
+# ETEINTE : un relais bascule par erreur ou mal configure au retour d'une
+# coupure secteur arrete la production sans la moindre alerte.
+# Deux declencheurs : la bascule en journee, et un controle a 10h au cas ou
+# elle serait deja eteinte depuis la veille.
+automation surveillance_prise_solaire:
+  alias: 'Alerte prise panneau solaire coupée en journée'
+  trigger:
+    - platform: state
+      entity_id: switch.exterieur_smart_plug_solaire
+      to: 'off'
+      for:
+        minutes: 5
+    - platform: time
+      at: '10:00:00'
+  condition:
+    - condition: time
+      after: '10:00:00'
+      before: '16:00:00'
+    # Indispensable pour le declencheur horaire, qui se moque de l'etat.
+    - condition: state
+      entity_id: switch.exterieur_smart_plug_solaire
+      state: 'off'
+  action:
+    - service: notify.notify
+      data:
+        title: "Panneau solaire coupé"
+        message: >-
+          La prise du panneau est éteinte en pleine journée : aucune production
+          tant qu'elle n'est pas rallumée.
+  mode: single
+
+#####################################################################
 # Alarm Control and Intrusion Automation
 #####################################################################
 
@@ -1180,6 +1216,14 @@ automation sensor_heartbeat_monitor:
         # 2026-10-09, materiel hors service, et n'est donc plus surveille ici.
         - binary_sensor.zwave_capteur_fumee_salon_alarme_fumee
         - binary_sensor.zwave_capteur_fumee_imprimantes_3d_alarme_fumee
+
+        # Prise de mesure du panneau solaire. On surveille volontairement le
+        # 'switch' et non le capteur de puissance : le controle d'anciennete
+        # ci-dessous ne s'applique qu'au domaine 'sensor', or la production est
+        # nulle la nuit. En decembre, quinze heures d'obscurite depasseraient le
+        # seuil de 12 h et declencheraient une fausse alerte chaque matin.
+        # Le switch, lui, n'est signale que s'il devient reellement injoignable.
+        - switch.exterieur_smart_plug_solaire
 
       # Seul 'unavailable' / 'unknown' est un signal fiable de capteur mort.
       # L'anciennete n'en est pas un : les capteurs d'ouverture ne publient leur

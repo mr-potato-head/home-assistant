@@ -275,28 +275,21 @@ views:
 
         - type: vertical-stack
           cards:
-          # TEST card-mod : 'style:' est la cle de card-mod 2, renommee en
-          # 'card_mod:' en version 3. Si ce titre se centre et perd son fond
-          # alors que les autres restent a gauche, la v3 est confirmee et il
-          # faudra renommer la cle sur les sept cartes.
-          - content: |
-              # Salon
-            card_mod:
-              style:
-                .: |
-                  ha-card {
-                    background-color: transparent !important;
-                    box-shadow: none !important;
-                  }
-                ha-markdown:
-                  $: |
-                    h1 {
-                      font-size: 28px;
-                    # font-weight: bold;
-                      text-align: center;
-                      letter-spacing: '-0.01em';
-                    }
-            type: markdown
+          - type: custom:button-card
+            name: Salon
+            show_icon: false
+            show_state: false
+            tap_action:
+              action: none
+            styles:
+              name:
+                - font-size: 28px
+                - font-weight: 500
+                - letter-spacing: -0.01em
+              card:
+                - background: none
+                - box-shadow: none
+                - height: 56px
           - type: custom:button-card
             entity: sensor.zigbee_capteur_temperature_salon_temperature
             show_icon: false
@@ -477,24 +470,21 @@ views:
         cards:
           - type: vertical-stack
             cards:
-            - content: |
-                # Salle de bain
-              card_mod:
-                style:
-                  .: |
-                    ha-card {
-                      background-color: transparent !important;
-                      box-shadow: none !important;
-                    }
-                  ha-markdown:
-                    $: |
-                      h1 {
-                        font-size: 22px;
-                      # font-weight: bold;
-                        text-align: center;
-                        letter-spacing: '-0.01em';
-                      }
-              type: markdown
+            - type: custom:button-card
+              name: Salle de bain
+              show_icon: false
+              show_state: false
+              tap_action:
+                action: none
+              styles:
+                name:
+                  - font-size: 22px
+                  - font-weight: 500
+                  - letter-spacing: -0.01em
+                card:
+                  - background: none
+                  - box-shadow: none
+                  - height: 44px
             - type: custom:button-card
               entity: sensor.zigbee_capteur_temperature_salle_de_bain_temperature
               show_icon: false
@@ -589,24 +579,21 @@ views:
                       - height: 40px
           - type: vertical-stack
             cards:
-            - content: |
-                # Bureau
-              card_mod:
-                style:
-                  .: |
-                    ha-card {
-                      background-color: transparent !important;
-                      box-shadow: none !important;
-                    }
-                  ha-markdown:
-                    $: |
-                      h1 {
-                        font-size: 22px;
-                      # font-weight: bold;
-                        text-align: center;
-                        letter-spacing: '-0.01em';
-                      }
-              type: markdown
+            - type: custom:button-card
+              name: Bureau
+              show_icon: false
+              show_state: false
+              tap_action:
+                action: none
+              styles:
+                name:
+                  - font-size: 22px
+                  - font-weight: 500
+                  - letter-spacing: -0.01em
+                card:
+                  - background: none
+                  - box-shadow: none
+                  - height: 44px
             - type: custom:button-card
               entity: sensor.zigbee_capteur_temperature_bureau_temperature
               show_icon: false
@@ -705,24 +692,21 @@ views:
                       - height: 40px
           - type: vertical-stack
             cards:
-            - content: |
-                # Salle de Jeux
-              card_mod:
-                style:
-                  .: |
-                    ha-card {
-                      background-color: transparent !important;
-                      box-shadow: none !important;
-                    }
-                  ha-markdown:
-                    $: |
-                      h1 {
-                        font-size: 22px;
-                      # font-weight: bold;
-                        text-align: center;
-                        letter-spacing: '-0.01em';
-                      }
-              type: markdown
+            - type: custom:button-card
+              name: Salle de Jeux
+              show_icon: false
+              show_state: false
+              tap_action:
+                action: none
+              styles:
+                name:
+                  - font-size: 22px
+                  - font-weight: 500
+                  - letter-spacing: -0.01em
+                card:
+                  - background: none
+                  - box-shadow: none
+                  - height: 44px
             - type: custom:button-card
               entity: sensor.zigbee_capteur_temperature_salle_de_jeux_temperature
               show_icon: false
@@ -821,24 +805,21 @@ views:
                       - height: 40px
           - type: vertical-stack
             cards:
-            - content: |
-                # Parents
-              card_mod:
-                style:
-                  .: |
-                    ha-card {
-                      background-color: transparent !important;
-                      box-shadow: none !important;
-                    }
-                  ha-markdown:
-                    $: |
-                      h1 {
-                        font-size: 22px;
-                      # font-weight: bold;
-                        text-align: center;
-                        letter-spacing: '-0.01em';
-                      }
-              type: markdown
+            - type: custom:button-card
+              name: Parents
+              show_icon: false
+              show_state: false
+              tap_action:
+                action: none
+              styles:
+                name:
+                  - font-size: 22px
+                  - font-weight: 500
+                  - letter-spacing: -0.01em
+                card:
+                  - background: none
+                  - box-shadow: none
+                  - height: 44px
             - type: custom:button-card
               entity: sensor.zigbee_capteur_temperature_chambre_parentale_temperature
               show_icon: false
@@ -937,24 +918,21 @@ views:
                       - height: 40px
           - type: vertical-stack
             cards:
-            - content: |
-                # Léandre
-              card_mod:
-                style:
-                  .: |
-                    ha-card {
-                      background-color: transparent !important;
-                      box-shadow: none !important;
-                    }
-                  ha-markdown:
-                    $: |
-                      h1 {
-                        font-size: 22px;
-                      # font-weight: bold;
-                        text-align: center;
-                        letter-spacing: '-0.01em';
-                      }
-              type: markdown
+            - type: custom:button-card
+              name: Léandre
+              show_icon: false
+              show_state: false
+              tap_action:
+                action: none
+              styles:
+                name:
+                  - font-size: 22px
+                  - font-weight: 500
+                  - letter-spacing: -0.01em
+                card:
+                  - background: none
+                  - box-shadow: none
+                  - height: 44px
             - type: custom:button-card
               entity: sensor.zigbee_capteur_temperature_chambre_leandre_temperature
               show_icon: false
@@ -1053,24 +1031,21 @@ views:
                       - height: 40px
           - type: vertical-stack
             cards:
-            - content: |
-                # Loïs
-              card_mod:
-                style:
-                  .: |
-                    ha-card {
-                      background-color: transparent !important;
-                      box-shadow: none !important;
-                    }
-                  ha-markdown:
-                    $: |
-                      h1 {
-                        font-size: 22px;
-                      # font-weight: bold;
-                        text-align: center;
-                        letter-spacing: '-0.01em';
-                      }
-              type: markdown
+            - type: custom:button-card
+              name: Loïs
+              show_icon: false
+              show_state: false
+              tap_action:
+                action: none
+              styles:
+                name:
+                  - font-size: 22px
+                  - font-weight: 500
+                  - letter-spacing: -0.01em
+                card:
+                  - background: none
+                  - box-shadow: none
+                  - height: 44px
             - type: custom:button-card
               entity: sensor.zigbee_capteur_temperature_chambre_lois_temperature
               show_icon: false
